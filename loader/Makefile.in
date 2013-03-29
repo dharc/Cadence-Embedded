@@ -10,7 +10,7 @@ BIN_PATH=@prefix@/bin
 
 SOURCES=linux.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=cadence-canvu.bin
+EXECUTABLE=cadence-embed.bin
 
 all: $(SOURCES) $(EXECUTABLE)
 
@@ -22,8 +22,8 @@ $(EXECUTABLE): $(OBJECTS)
 
 install:
 	install -d "$(BIN_PATH)"
-	install -m 755 cadence-canvu.bin "$(BIN_PATH)"
-	install -m 755 cadence-canvu "$(BIN_PATH)"
+	install -m 755 cadence-embed.bin "$(BIN_PATH)"
+	install -m 755 cadence-embed "$(BIN_PATH)"
 
 clean:
 	rm *.o
