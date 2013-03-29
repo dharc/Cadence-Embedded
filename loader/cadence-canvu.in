@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export LD_LIBRARY_PATH="@prefix@/lib:@prefix@/share/cadence-embedded/modules"
+export CADENCE_SCRIPTS="@prefix@/share/cadence-embedded/scripts"
+export CADENCE_PATH=".:@prefix@/share/cadence-embedded/scripts:@prefix@/share/cadence-embedded/projects:@prefix@/share/cadence-embedded"
+export CADENCE_MODULES="@prefix@/share/cadence-embedded/modules"
+@prefix@/bin/cadence-canvu.bin $*

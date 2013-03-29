@@ -1,0 +1,28 @@
+SHELL=/bin/sh
+
+CC=@CC@
+MOC=@QTMOC@
+CPP=@CXX@
+CPPFLAGS=@CXXFLAGS@ @QTINCLUDES@
+LDFLAGS=@LDFLAGS@ @QTLIBS@
+INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
+
+SOURCES=browser.cpp inputwindow.cpp mainwindow.cpp syntax.cpp ui.cpp msghandler.cpp modules.cpp history.cpp observableviewer.cpp
+HEADERS=browser.h inputwindow.h mainwindow.h msghandler.h modules.h history.h observableviewer.h
+MOCSOURCES=$(HEADERS:.h=_moc.cpp)
+OBJECTS=$(SOURCES:.cpp=.o) $(MOCSOURCES:.cpp=.o)
+LIB=libcadence-embedded_ui.so
+
+all: $(SOURCES) $(LIB)
+
+$(LIB): $(OBJECTS)
+	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS)  -lQtGui -lQtCore
+
+%_moc.cpp:
+	$(MOC) -o $@ $*.h
+
+.cpp.o:
+	$(CPP) -fPIC -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+clean:
+	rm *.o

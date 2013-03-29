@@ -1,0 +1,4 @@
+MODULE_NAME=xnet
+SOURCES=xnet.cpp xnetconnection.cpp xnethandler.cpp xnetprotocol.cpp xnetcache.cpp tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp
+
+include ../../module-src.mk

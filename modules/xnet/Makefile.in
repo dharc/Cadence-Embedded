@@ -1,0 +1,3 @@
+MODULE_NAME=xnet
+
+include ../module.mk

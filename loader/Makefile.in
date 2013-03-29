@@ -1,0 +1,29 @@
+SHELL=/bin/sh
+
+CC=@CC@
+AR=ar
+CPP=@CXX@
+CPPFLAGS=@CXXFLAGS@
+LDFLAGS=@LDFLAGS@
+INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
+BIN_PATH=@prefix@/bin
+
+SOURCES=linux.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=cadence-canvu.bin
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CPP) $(LDFLAGS) -L../libcadence-embedded/ -o ./$@ $(OBJECTS) -lcadence-embedded -ldl -lpthread
+
+.cpp.o:
+	$(CPP) -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+install:
+	install -d "$(BIN_PATH)"
+	install -m 755 cadence-canvu.bin "$(BIN_PATH)"
+	install -m 755 cadence-canvu "$(BIN_PATH)"
+
+clean:
+	rm *.o
