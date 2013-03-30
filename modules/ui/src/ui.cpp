@@ -1,16 +1,16 @@
-#include <cadence/agent.h>
+#include <cadence-embedded/agent.h>
 #include <QtGui>
 #include "inputwindow.h"
 #include "mainwindow.h"
 #include "msghandler.h"
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 //QApplication *qtapp=0;
 //int argc = 0;
 
-extern "C" void initialise(const cadence::doste::OID &base) {
+extern "C" void initialise(const cadence::core::OID &base) {
 	//qtapp = new QApplication(argc,0);
 
 	//new MsgAgent(base);

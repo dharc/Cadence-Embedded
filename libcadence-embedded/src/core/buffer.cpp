@@ -156,7 +156,7 @@ Buffer *Buffer::lookup(const OID &id) {
 }
 
 void Buffer::finalise() {
-	for (int i=0; i < MAX_BUFFERS; i++) {
+	for (unsigned int i=0; i < MAX_BUFFERS; i++) {
 		if (s_buffers[i] != 0) delete s_buffers[i];
 	}
 }

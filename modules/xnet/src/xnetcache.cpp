@@ -3,7 +3,7 @@
 #include "xnetprotocol.h"
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 XNetCache::XNetCache(XNetConnection *conn)
  : Handler(OID::local()+OID(0,0,16,0), OID::local()+OID(0,0,17,0xFFFFFFF)) {

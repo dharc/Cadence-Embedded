@@ -3,15 +3,15 @@
 #include "inputwindow.h"
 #include "syntax.h"
 #include <iostream>
-#include <cadence/cadence.h>
-#include <cadence/doste/oid.h>
-#include <cadence/dasm.h>
-#include <cadence/messages.h>
+#include <cadence-embedded/cadence.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/dasm.h>
+#include <cadence-embedded/messages.h>
 #include "browser.h"
 #include "msghandler.h"
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 QString soutput;
 
@@ -75,7 +75,7 @@ void IWindow::textchanged() {
 }
 
 void IWindow::submit() {
-	OID dasm = cadence::doste::root["notations"][m_notation];
+	OID dasm = cadence::core::root["notations"][m_notation];
 
 	if (dasm == Null) {
 		cadence::Error(cadence::Error::CUSTOM, "Unrecognised Notation");

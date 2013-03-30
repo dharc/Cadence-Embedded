@@ -29,7 +29,7 @@
 using namespace cadence;
 //using namespace doste::dvm;
 
-StringStream::StringStream(const char *s)
+cadence::StringStream::StringStream(const char *s)
   : m_s(s), m_pos(0) {
 	m_size = strlen(s);
 }

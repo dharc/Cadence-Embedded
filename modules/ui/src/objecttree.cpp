@@ -260,7 +260,7 @@ ObjectTree::ObjectTree(QWidget *parent)
 	}
 	icon_def = new QPixmap(icon_deffile);
 	
-	new ObjectItem(list, Null, Null, doste::root, "root", false);
+	new ObjectItem(list, Null, Null, core::root, "root", false);
 	//new ObjectItem(list, Null, Null, doste::Current, "current", false);
 
 	//aname = new AttribNameDialog();

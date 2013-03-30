@@ -4,7 +4,7 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QListWidget>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/core/oid.h>
 #include "history.h"
 
 class MsgAgent;
@@ -26,7 +26,7 @@ class IWindow : public QWidget {
 	QPushButton *m_submit;
 	QListWidget *m_keylist;
 	QTextEdit *m_output;
-	cadence::doste::OID m_notation;
+	cadence::core::OID m_notation;
 	HistoryLog *m_history;
 	MsgAgent *m_msg;
 	int m_historyix;

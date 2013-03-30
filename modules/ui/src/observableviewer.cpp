@@ -2,12 +2,12 @@
 #include "browser.h"
 #include <QHBoxLayout>
 #include "syntax.h"
-#include <cadence/cadence.h>
+#include <cadence-embedded/cadence.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
-ObservableViewer::ObservableViewer(HistoryLog *hist, const cadence::doste::OID &object, const cadence::doste::OID &key) {
+ObservableViewer::ObservableViewer(HistoryLog *hist, const cadence::core::OID &object, const cadence::core::OID &key) {
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	m_history = hist;
 	m_def = new QTextEdit();
@@ -91,7 +91,7 @@ ObservableViewer::ObservableViewer(HistoryLog *hist, const cadence::doste::OID &
 	connect(m_def, SIGNAL(textChanged()), this, SLOT(textchanged()));
 }
 
-ObservableViewer::ObservableViewer(HistoryLog *hist, const cadence::doste::OID &object) {
+ObservableViewer::ObservableViewer(HistoryLog *hist, const cadence::core::OID &object) {
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	m_history = hist;
 	m_def = new QTextEdit();
@@ -191,7 +191,7 @@ void ObservableViewer::submit() {
 	
 	//std::cout << "CODE: " << buf << "\n";
 	
-	OID dasm = cadence::doste::root["notations"]["dasm"];
+	OID dasm = cadence::core::root["notations"]["dasm"];
 	((Notation*)dasm)->execute(buf);
 	//m_history->addEntry(buf);
 }

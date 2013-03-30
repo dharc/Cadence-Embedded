@@ -3,7 +3,7 @@
 
 #include <QTextEdit>
 #include <QPushButton>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/core/oid.h>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QComboBox>
@@ -15,8 +15,8 @@ class ObservableViewer : public QWidget {
 	Q_OBJECT
 
 	public:
-	ObservableViewer(HistoryLog *hist, const cadence::doste::OID &object, const cadence::doste::OID &key);
-	ObservableViewer(HistoryLog *hist, const cadence::doste::OID &object);
+	ObservableViewer(HistoryLog *hist, const cadence::core::OID &object, const cadence::core::OID &key);
+	ObservableViewer(HistoryLog *hist, const cadence::core::OID &object);
 	~ObservableViewer() {};
 	
 
@@ -28,8 +28,8 @@ class ObservableViewer : public QWidget {
 	QPushButton *m_submit;
 	QLineEdit *m_valstring;
 	QComboBox *m_deftype;
-	cadence::doste::OID m_object;
-	cadence::doste::OID m_key;
+	cadence::core::OID m_object;
+	cadence::core::OID m_key;
 	HistoryLog *m_history;
 	
 

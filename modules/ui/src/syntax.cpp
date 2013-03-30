@@ -1,10 +1,10 @@
 #include "syntax.h"
 #include <iostream>
-#include <cadence/doste/oid.h>
-#include <cadence/doste/doste.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/core/core.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 Syntax::Syntax(QTextDocument *textEdit, QListWidget *kw)
 	: QSyntaxHighlighter(textEdit)

@@ -1,9 +1,9 @@
 #include "xnetprotocol.h"
 #include "xnetconnection.h"
-#include <cadence/cadence.h>
-#include <cadence/dstring.h>
-#include <cadence/messages.h>
-#include <cadence/doste/buffer.h>
+#include <cadence-embedded/cadence.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/messages.h>
+#include <cadence-embedded/core/buffer.h>
 #include <string.h>
 
 #include "tinyxml.h"
@@ -11,7 +11,7 @@
 #undef ERROR
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 /*struct EvtTypeToString {
 	int type;

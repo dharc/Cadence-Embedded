@@ -2,8 +2,8 @@
 #define _MSGHANDLER_
 
 
-#include <cadence/agent.h>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/agent.h>
+#include <cadence-embedded/core/oid.h>
 #include <QListWidget>
 #include <QTabWidget>
 
@@ -11,7 +11,7 @@ class MsgAgent : public QWidget,  public cadence::Agent  {
 	Q_OBJECT
 	
 	public:
-	MsgAgent(QTabWidget *tabs, const cadence::doste::OID &obj);
+	MsgAgent(QTabWidget *tabs, const cadence::core::OID &obj);
 	~MsgAgent() {};
 	
 	void infoMessage(const char *msg);

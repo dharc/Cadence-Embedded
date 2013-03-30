@@ -1,10 +1,10 @@
 #include "browser.h"
 #include <QPainter>
 #include <QMouseEvent>
-#include <cadence/file.h>
+#include <cadence-embedded/file.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <cadence/agenthandler.h>
+#include <cadence-embedded/agenthandler.h>
 #include <QToolTip>
 #include "observableviewer.h"
 #include <QApplication>
@@ -21,7 +21,7 @@ QImage *Browser::image_line8=0;
 QImage *Browser::image_node[50]= { 0 };
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 OnEvent(BrowserItem, evt_changed) {
 	//std::cout << "Browser: Changed!\n";
@@ -30,7 +30,7 @@ OnEvent(BrowserItem, evt_changed) {
 	if (m_expanded) {
 		char buf[50];
 		std::list<BrowserItem*>::iterator j = m_children.begin();
-		for (cadence::doste::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
+		for (cadence::core::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
 			if (m_host->hideid() && (*i) == OID("id")) continue;
 			if (m_host->hidekey() && (*i) == Key) continue;
 			if (m_host->hideparent() && (*i) == This) continue;
@@ -55,7 +55,7 @@ OnEvent(BrowserItem, evt_changed) {
 
 IMPLEMENT_EVENTS(BrowserItem, BaseAgent);
 
-BrowserItem::BrowserItem(Browser *host, const cadence::doste::OID &o, const char *label, const cadence::doste::OID &e, const cadence::doste::OID &p) {
+BrowserItem::BrowserItem(Browser *host, const cadence::core::OID &o, const char *label, const cadence::core::OID &e, const cadence::core::OID &p) {
 	m_host = host;
 	m_object = o;
 	m_parent = p;
@@ -94,7 +94,7 @@ BrowserItem::~BrowserItem() {
 	if (m_def) delete [] m_def;
 }
 
-void BrowserItem::setObject(const cadence::doste::OID &o) {
+void BrowserItem::setObject(const cadence::core::OID &o) {
 	if (m_object == o) {
 		return;
 	} else {
@@ -110,7 +110,7 @@ void BrowserItem::setObject(const cadence::doste::OID &o) {
 		//Redo the event handling
 		if (m_aid != -1) {
 			if (m_object.isBool() || !m_object.isReserved())
-				cadence::AgentHandler::update(m_aid, this, m_eid, m_object(cadence::doste::All), 0);
+				cadence::AgentHandler::update(m_aid, this, m_eid, m_object(cadence::core::All), 0);
 		} else {
 			if (m_object.isBool() || !m_object.isReserved())
 				registerEvents();
@@ -126,7 +126,7 @@ void BrowserItem::expandDefinition() {
 	if (!m_expanded && (m_defobject != Null)) {
 		m_defbrowse = true;
 		m_expanded = true;
-		for (cadence::doste::OID::iterator i = m_defobject.begin(); i != m_defobject.end(); i++) {
+		for (cadence::core::OID::iterator i = m_defobject.begin(); i != m_defobject.end(); i++) {
 			if (m_host->hideid() && (*i) == OID("id")) continue;
 			if (m_host->hidekey() && (*i) == Key) continue;
 			if (m_host->hideparent() && (*i) == This) continue;
@@ -142,7 +142,7 @@ void BrowserItem::expand() {
 	
 	if (!m_expanded) {
 		m_expanded = true;
-		for (cadence::doste::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
+		for (cadence::core::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
 			if (m_host->hideid() && (*i) == OID("id")) continue;
 			if (m_host->hidekey() && (*i) == Key) continue;
 			if (m_host->hideparent() && (*i) == This) continue;
@@ -250,7 +250,7 @@ int BrowserItem::getScale() {
 
 void BrowserItem::drawNode(QPainter &p) {
 	//0 = default node type.
-	if (m_object == cadence::doste::Null) {
+	if (m_object == cadence::core::Null) {
 		p.drawImage(m_screenx, m_screeny, *Browser::image_node[1]);
 	} else if (m_object.isModifier()) {
 		
@@ -497,7 +497,7 @@ OnEvent(Browser, evt_refresh) {
 
 IMPLEMENT_EVENTS(Browser, BaseAgent);
 
-Browser::Browser(HistoryLog *hist, QTabWidget *tabs, const cadence::doste::OID &base, QWidget *parent)
+Browser::Browser(HistoryLog *hist, QTabWidget *tabs, const cadence::core::OID &base, QWidget *parent)
 	: QWidget(parent), m_base(base) {
 	m_history = hist;
 	setPalette(QPalette(QColor(255,255,255)));

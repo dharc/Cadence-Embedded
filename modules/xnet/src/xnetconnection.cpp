@@ -1,7 +1,7 @@
 #include "xnetconnection.h"
 #include "xnetprotocol.h"
 #include "xnethandler.h"
-#include <cadence/messages.h>
+#include <cadence-embedded/messages.h>
 #include <string.h>
 
 #ifndef WIN32
@@ -14,7 +14,7 @@
 #undef ERROR
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 XNetConnection *XNetConnection::s_conns[MAX_CONNECTIONS] = {0};
 OID XNetConnection::s_base;

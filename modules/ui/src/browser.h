@@ -1,8 +1,8 @@
 #ifndef _BROWSER_H_
 #define _BROWSER_H_
 
-#include <cadence/doste/oid.h>
-#include <cadence/agent.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/agent.h>
 #include <QWidget>
 #include <list>
 #include <QMenu>
@@ -15,7 +15,7 @@ class Browser;
 
 class BrowserItem : public cadence::BaseAgent {
 	public:
-	BrowserItem(Browser *host, const cadence::doste::OID &o, const char *label, const cadence::doste::OID &e, const cadence::doste::OID &p);
+	BrowserItem(Browser *host, const cadence::core::OID &o, const char *label, const cadence::core::OID &e, const cadence::core::OID &p);
 	~BrowserItem();
 	
 	void paint(QPainter &p, int px, int py);
@@ -24,7 +24,7 @@ class BrowserItem : public cadence::BaseAgent {
 	
 	BrowserItem *findItem(int x, int y);
 	
-	void setObject(const cadence::doste::OID &o);
+	void setObject(const cadence::core::OID &o);
 	
 	int height() { return m_height; }
 	int width() { return m_width; }
@@ -34,9 +34,9 @@ class BrowserItem : public cadence::BaseAgent {
 	
 	char *getEdgeLabel() { return m_label; }
 	char *getValueLabel() { return m_vallabel; }
-	const cadence::doste::OID &getEdge() { return m_edge; }
-	const cadence::doste::OID &getValue() { return m_object; }
-	const cadence::doste::OID &getParent() { return m_parent; }
+	const cadence::core::OID &getEdge() { return m_edge; }
+	const cadence::core::OID &getValue() { return m_object; }
+	const cadence::core::OID &getParent() { return m_parent; }
 	int getScale();
 	bool changed() { return m_changed; }
 	bool hasDefinition() { return m_def != 0; }
@@ -50,7 +50,7 @@ class BrowserItem : public cadence::BaseAgent {
 	void collapse();
 	
 	BEGIN_EVENTS(BaseAgent);
-	EVENT(evt_changed, (m_object)(cadence::doste::All));
+	EVENT(evt_changed, (m_object)(cadence::core::All));
 	END_EVENTS;
 	
 	static const int SCALE_LARGE = 1;
@@ -59,9 +59,9 @@ class BrowserItem : public cadence::BaseAgent {
 	static const int SCALE_TINY = 4;
 	
 	private:
-	cadence::doste::OID m_object;
-	cadence::doste::OID m_parent;
-	cadence::doste::OID m_edge;
+	cadence::core::OID m_object;
+	cadence::core::OID m_parent;
+	cadence::core::OID m_edge;
 	char m_label[50];
 	char m_vallabel[50];
 	bool m_expanded;
@@ -78,7 +78,7 @@ class BrowserItem : public cadence::BaseAgent {
 	bool m_changed;
 	bool m_defbrowse;
 	char *m_def;
-	cadence::doste::OID m_defobject;
+	cadence::core::OID m_defobject;
 	bool m_edgeclick;
 	
 	std::list<BrowserItem*> m_children;
@@ -97,11 +97,11 @@ class Browser : public QWidget, public cadence::BaseAgent
 	Q_OBJECT
 
 	public:
-	Browser(HistoryLog *hist, QTabWidget *tabs, const cadence::doste::OID &base, QWidget *parent = 0); 
+	Browser(HistoryLog *hist, QTabWidget *tabs, const cadence::core::OID &base, QWidget *parent = 0); 
 	~Browser();
 	
-	void addRoot(cadence::doste::OID r) {
-		m_roots.push_back(new BrowserItem(this, r, "Object", cadence::doste::Null, cadence::doste::Null));
+	void addRoot(cadence::core::OID r) {
+		m_roots.push_back(new BrowserItem(this, r, "Object", cadence::core::Null, cadence::core::Null));
 	};
 	
 	void changed() { m_changed = true; };
@@ -151,7 +151,7 @@ class Browser : public QWidget, public cadence::BaseAgent
 	private:
 	std::list<BrowserItem*> m_roots;
 	bool m_changed;
-	cadence::doste::OID m_base;
+	cadence::core::OID m_base;
 	QMenu *m_menu;
 	QPoint m_global;
 	BrowserItem *m_currentitem;

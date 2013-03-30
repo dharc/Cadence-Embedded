@@ -1,8 +1,8 @@
 #ifndef _doste_XNETCONNECTION_H_
 #define _doste_XNETCONNECTION_H_
 
-#include <cadence/doste/oid.h>
-#include <cadence/agent.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/agent.h>
 #include "xnet.h"
 
 #ifndef WIN32
@@ -35,8 +35,8 @@ class XNetConnection : public cadence::Agent {
 	
 	OBJECT(Agent, XNetConnection);
 	
-	XNetConnection(const cadence::doste::OID &o);
-	XNetConnection(const cadence::doste::OID &o, int sck);
+	XNetConnection(const cadence::core::OID &o);
+	XNetConnection(const cadence::core::OID &o, int sck);
 	~XNetConnection();
 	
 	PROPERTY_RF(bool, connect, "connect");
@@ -48,7 +48,7 @@ class XNetConnection : public cadence::Agent {
 	PROPERTY_RF(int, port, "port");
 	PROPERTY_WF(int, port, "port");
 	
-	PROPERTY_RF(cadence::doste::OID, local, "local");
+	PROPERTY_RF(cadence::core::OID, local, "local");
 
 	PROPERTY_RF(cadence::dstring, username, "username");
 	PROPERTY_WF(cadence::dstring, username, "username");
@@ -64,10 +64,10 @@ class XNetConnection : public cadence::Agent {
 	XNetProtocol *protocol() const { return m_proto; };
 	bool ssDependency() { return true; };
 	XNetHandler *xhandler() const { return m_handler; };
-	void xhandler(const cadence::doste::OID &base);
+	void xhandler(const cadence::core::OID &base);
 
-	static XNetConnection *lookup(const cadence::doste::OID &o);
-	static void listen(const cadence::doste::OID &base);
+	static XNetConnection *lookup(const cadence::core::OID &o);
+	static void listen(const cadence::core::OID &base);
 	static void stop();
 	static void update();
 
@@ -84,7 +84,7 @@ class XNetConnection : public cadence::Agent {
 	
 	int m_socket;
 	char m_addr[15];
-	cadence::doste::OID m_local;
+	cadence::core::OID m_local;
 	XNetProtocol *m_proto;
 	int m_bufsize;
 	int m_bpos;
@@ -101,7 +101,7 @@ class XNetConnection : public cadence::Agent {
 	static bool initServer(short port);
 	
 	static XNetConnection *s_conns[MAX_CONNECTIONS];
-	static cadence::doste::OID s_base;
+	static cadence::core::OID s_base;
 	//#ifndef WIN32
 	//static pthread_t s_thread;
 	//#else

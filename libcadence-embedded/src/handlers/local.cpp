@@ -354,7 +354,7 @@ OID VStore::Object::specialGet(const OID &k) {
 void VStore::Object::copy(const OID &nobj) {
 	//OID nobj = OID::create();
 	OID res, value;
-	int flags;
+	int flags = 0;
 	Attribute *attrib;
 	char *dbuf = new char [5000];
 	char *dbuf2;

@@ -1,28 +1,28 @@
 #ifndef _XNETCACHE_
 #define _XNETCACHE_
 
-#include <cadence/doste/handler.h>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/core/handler.h>
+#include <cadence-embedded/core/oid.h>
 
 class XNetConnection;
 
 struct CacheEntry {
-	cadence::doste::OID n;
-	cadence::doste::OID e;
-	cadence::doste::OID value;
+	cadence::core::OID n;
+	cadence::core::OID e;
+	cadence::core::OID value;
 	bool out_of_date;
 	CacheEntry *next;
 };
 
-class XNetCache : public cadence::doste::Handler {
+class XNetCache : public cadence::core::Handler {
 	public:
 		
 	XNetCache(XNetConnection *conn);
 	~XNetCache();
 	
-	bool handle(cadence::doste::Event &evt);
+	bool handle(cadence::core::Event &evt);
 	
-	const cadence::doste::OID &get(const cadence::doste::OID &n, const cadence::doste::OID &e);
+	const cadence::core::OID &get(const cadence::core::OID &n, const cadence::core::OID &e);
 	//const cadence::doste::OID &getkeys(const cadence::doste::OID &n);
 	
 	private:
@@ -33,15 +33,15 @@ class XNetCache : public cadence::doste::Handler {
 	//KeyCacheEntry *m_keycache[KEY_CACHE_SIZE];
 	XNetConnection *m_conn;
 	
-	static int hashOIDS(const cadence::doste::OID &o, const cadence::doste::OID &k) {
+	static int hashOIDS(const cadence::core::OID &o, const cadence::core::OID &k) {
 		return (o.d()+k.d()) % CACHE_SIZE;
 	};
 	
-	static int hashOID(const cadence::doste::OID &o) {
+	static int hashOID(const cadence::core::OID &o) {
 		return o.d() % KEY_CACHE_SIZE;
 	};
 	
-	CacheEntry *lookup(const cadence::doste::OID &n, const cadence::doste::OID &e);
+	CacheEntry *lookup(const cadence::core::OID &n, const cadence::core::OID &e);
 	//KeyCacheEntry *lookup(const cadence::doste::OID &n);
 	int lookupCount(CacheEntry *e, int hash);
 };

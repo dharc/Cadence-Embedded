@@ -246,7 +246,7 @@ void cadence::initialise(int argc, char *argv[]) {
 	OID base = OID(1,0,0,0);
 	int ai = 0;
 	int arg_exec[20]; //NOTE: do not hard code.
-	int port = 9001;
+	//int port = 9001;
 	
 	startticks = getTicks();
 
@@ -267,8 +267,8 @@ void cadence::initialise(int argc, char *argv[]) {
 					break;
 			case 's':	service = true;
 					break;
-			case 'p':	port = atoi(argv[++i]);
-					break;
+			//case 'p':	port = atoi(argv[++i]);
+			//		break;
 
 			default:	break;
 			}
@@ -366,12 +366,12 @@ void cadence::run() {
 	char *ibuf = NEW char[10000];
 	int pos = 0;
 	int count;
-	timeval block;
-	int selres;
-	sockaddr_in fromaddr;
-	socklen_t fromlength;
+	//timeval block;
+	//int selres;
+	//sockaddr_in fromaddr;
+	//socklen_t fromlength;
 	OID res;
-	fd_set fdread;
+	//fd_set fdread;
 	
 	//DASM dasm;
 	

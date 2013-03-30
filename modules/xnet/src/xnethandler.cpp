@@ -2,12 +2,12 @@
 #include "xnetconnection.h"
 #include "xnetprotocol.h"
 #include "xnetcache.h"
-#include <cadence/doste/processor.h>
-#include <cadence/doste/buffer.h>
+#include <cadence-embedded/core/processor.h>
+#include <cadence-embedded/core/buffer.h>
 #include <string.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 //Supports 4 billion network connection objects!
 XNetHandler::XNetHandler(XNetConnection *conn, const OID &base)

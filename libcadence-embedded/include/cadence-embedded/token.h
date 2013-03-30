@@ -447,10 +447,10 @@ namespace cadence {
 		};
 
 		struct MultiBlock {
-			MultiBlock(char *a, char *b) : m_a(a), m_b(b) {};
+			MultiBlock(const char *a, const char *b) : m_a(a), m_b(b) {};
 			
 			bool parse(Stream &s) const {
-				int p = s.tell();
+				//int p = s.tell();
 				if ((s.peek() != m_a[0]) || s.eof()) { return false; }
 				s.seek(1);
 				if ((s.peek() != m_a[1]) || s.eof()) {
@@ -471,8 +471,8 @@ namespace cadence {
 			mutable char value[500];
 			
 			private:
-			char *m_a;
-			char *m_b;
+			const char *m_a;
+			const char *m_b;
 		};
 	};
 };

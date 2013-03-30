@@ -10,7 +10,7 @@ INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-
 SOURCES=memory.cpp cadence.cpp messages.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 LIB=libcadence-embedded.so
-DOSTEOBJ=./core/libcadencecore.a ./notations/libcadencenotations.a ./handlers/libcadencehandlers.a ./library/libcadencelib.a ./agents/libcadenceagents.a
+DOSTEOBJ=./core/libcadencecore.a ./notations/libcadencenotations.a ./handlers/libcadencehandlers.a ./agents/libcadenceagents.a ./library/libcadencelib.a
 
 all: $(SOURCES) $(LIB)
 

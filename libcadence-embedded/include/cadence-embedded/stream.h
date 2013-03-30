@@ -132,7 +132,7 @@ namespace cadence {
 	 * as a data source instead of a file.
 	 * @author Nicolas Pope
 	 */
-	class XARAIMPORT StringStream : public Stream {
+	class StringStream : public Stream {
 		public:
 		StringStream() : m_s(0), m_pos(0) {}
 		StringStream(const char *s);

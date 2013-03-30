@@ -6,12 +6,12 @@
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QStringList>
-#include <cadence/cadence.h>
-#include <cadence/doste/doste.h>
+#include <cadence-embedded/cadence.h>
+#include <cadence-embedded/core/core.h>
 #include <QScrollArea>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
@@ -55,8 +55,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	itabs = new QTabWidget();
 	history = new HistoryLog(itabs);
 
-	browser = new Browser(history, itabs, cadence::doste::root.get("ui").get("browser"));
-	browser->addRoot(cadence::doste::root);
+	browser = new Browser(history, itabs, cadence::core::root.get("ui").get("browser"));
+	browser->addRoot(cadence::core::root);
 	browser->setLayout(new QVBoxLayout());
 	
 	QScrollArea *browser_scroll = new QScrollArea();
@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	mtabs = new QTabWidget();
 	splitver->addWidget(mtabs);
 	//msgwin = new MessageWindow(mtabs);
-	msgwin = new MsgAgent(mtabs, cadence::doste::root);
+	msgwin = new MsgAgent(mtabs, cadence::core::root);
 	inputwin = new IWindow(msgwin, history, "dasm");
 	history->setSource(inputwin);
 	modwin = new ModuleList();
@@ -195,10 +195,10 @@ void MainWindow::MakeMenu()
 
 void MainWindow::fileRun()
 {
-	QString s = QFileDialog::getOpenFileName(this, "Run Script", QString::null, "DOSTE Scripts (*.dasm)");
+	QString s = QFileDialog::getOpenFileName(this, "Run Script", QString::null, "Cadence Scripts (*.dasm)");
 
-	OID dasm = cadence::doste::root["notations"]["dasm"];
-	((Notation*)dasm)->run((const char*)s.toAscii(),cadence::doste::root);
+	OID dasm = cadence::core::root["notations"]["dasm"];
+	((Notation*)dasm)->run((const char*)s.toAscii(),cadence::core::root);
 }
 
 void MainWindow::fileOpen()
@@ -221,7 +221,7 @@ void MainWindow::fileOpen()
 
 void MainWindow::fileSave()
 {
-	QString s = QFileDialog::getSaveFileName(this, "Save Script", QString::null, "DOSTE Scripts (*.dasm)");
+	QString s = QFileDialog::getSaveFileName(this, "Save Script", QString::null, "Cadence Scripts (*.dasm)");
 
 	//ciwin->SaveFile(s);
 }
@@ -255,5 +255,5 @@ void MainWindow::editAboutToShow() {
 }
 
 void MainWindow::quit() {
-	cadence::doste::root["running"] = false;
+	cadence::core::root["running"] = false;
 }

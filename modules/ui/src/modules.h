@@ -1,8 +1,8 @@
 #ifndef _MODULE_VIEW_
 #define _MODULE_VIEW_
 
-#include <cadence/doste/doste.h>
-#include <cadence/agent.h>
+#include <cadence-embedded/core/core.h>
+#include <cadence-embedded/agent.h>
 #include <QWidget>
 #include <QTableWidget>
 
@@ -14,12 +14,12 @@ class ModuleList : public QWidget, public cadence::BaseAgent {
 	~ModuleList() {}
 	
 	BEGIN_EVENTS(cadence::BaseAgent);
-	EVENT(evt_mod, m_object(cadence::doste::All));
+	EVENT(evt_mod, m_object(cadence::core::All));
 	END_EVENTS;
 	
 	private:
 	QTableWidget *m_modules;
-	cadence::doste::OID m_object;
+	cadence::core::OID m_object;
 };
 
 #endif

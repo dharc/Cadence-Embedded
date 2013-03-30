@@ -1,7 +1,7 @@
 #ifndef _cadence_XNETPROTOCOL_H_
 #define _cadence_XNETPROTOCOL_H_
 
-#include <cadence/doste/event.h>
+#include <cadence-embedded/core/event.h>
 #include "xnet.h"
 
 #include <cstring>
@@ -17,7 +17,7 @@
 class XNetCallback {
 	public:
 	virtual ~XNetCallback() {}
-	virtual void event(cadence::doste::Event &evt) {}
+	virtual void event(cadence::core::Event &evt) {}
 	virtual void script(const char *s) {};
 	virtual void result(const char *r) {};
 	virtual void error(const char *err) {};
@@ -25,12 +25,12 @@ class XNetCallback {
 
 struct XNet_Local {
 	XNet_Header h;
-	cadence::doste::OID local;
+	cadence::core::OID local;
 } __attribute__ ((packed));
 
 struct XNet_Share {
 	XNet_Header h;
-	cadence::doste::OID share;
+	cadence::core::OID share;
 } __attribute__ ((packed));
 
 struct XNet_Login {
@@ -43,22 +43,22 @@ struct XNet_SmallEvent {
 	XNet_Header h;
 	unsigned char id;
 	unsigned char type;
-	cadence::doste::OID dest;
-	cadence::doste::OID p1;
+	cadence::core::OID dest;
+	cadence::core::OID p1;
 } __attribute__ ((packed));
 
 struct XNet_Event {
 	XNet_Header h;
 	unsigned char id;
 	unsigned char type;
-	cadence::doste::OID dest;
-	cadence::doste::OID p1, p2, p3, p4;
+	cadence::core::OID dest;
+	cadence::core::OID p1, p2, p3, p4;
 } __attribute__ ((packed));
 
 struct XNet_Result {
 	XNet_Header h;
 	int id;
-	cadence::doste::OID result;
+	cadence::core::OID result;
 } __attribute__ ((packed));
 
 struct XNet_Block {
@@ -71,7 +71,7 @@ struct XNet_Block {
 
 struct XNet_ILookup {
 	XNet_Header h;
-	cadence::doste::OID index;
+	cadence::core::OID index;
 } __attribute__ ((packed));
 
 struct XNet_IValue {
@@ -95,29 +95,29 @@ class XNETIMPORT XNetProtocol {
 	int callbackFlags() const { return m_cbflags; };
 
 	void begin();
-	void local(const cadence::doste::OID &base);
-	void share(const cadence::doste::OID &share);
+	void local(const cadence::core::OID &base);
+	void share(const cadence::core::OID &share);
 	void login(const char *user, const char *passwd);
-	int event(cadence::doste::Event &evt, int flags);
+	int event(cadence::core::Event &evt, int flags);
 	//void script(const char *d);
 	//void results(bool v);
 	//void errors(bool v);
-	void result(int id, const cadence::doste::OID &res);
-	void ilookup(const cadence::doste::OID &index);
+	void result(int id, const cadence::core::OID &res);
+	void ilookup(const cadence::core::OID &index);
 	void ivalue(int id, const char *value);
 	void end();
 	void endResponse();
 	
 	bool wait(int id) { return m_results[id].waiting; };
-	cadence::doste::OID getResult(int id) {
-		cadence::doste::OID res = m_results[id].res;
+	cadence::core::OID getResult(int id) {
+		cadence::core::OID res = m_results[id].res;
 		m_results[id].avail = true;
 		return res;
 	};
 
 	virtual void data(const char *d, int length);
 
-	cadence::doste::OID lookup(const cadence::doste::OID &index);
+	cadence::core::OID lookup(const cadence::core::OID &index);
 	
 	static const int EFLAG_WAITRESULT = 0x0001;
 
@@ -172,7 +172,7 @@ class XNETIMPORT XNetProtocol {
 	int m_datasize;
 	char m_data[1000];
 	char *m_data2;
-	cadence::doste::OID m_this;
+	cadence::core::OID m_this;
 	
 	void append(const char *str) {
 		strcpy(m_data2, str);
@@ -184,7 +184,7 @@ class XNETIMPORT XNetProtocol {
 		m_data2 += strlen(m_data2);
 	}
 	
-	void append(const cadence::doste::OID &o) {
+	void append(const cadence::core::OID &o) {
 		char buf[100];
 		o.toString(buf,100);
 		if (buf[0] == '<') buf[0] = '[';
@@ -195,7 +195,7 @@ class XNETIMPORT XNetProtocol {
 	struct ResultEntries {
 		bool waiting;
 		bool avail;
-		cadence::doste::OID res;
+		cadence::core::OID res;
 	};
 	
 	ResultEntries m_results[MAX_RESULTS];

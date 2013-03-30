@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 OnEvent(ModuleList, evt_mod) {
 	//Remove all existing rows
@@ -14,7 +14,7 @@ OnEvent(ModuleList, evt_mod) {
 	int c=0;
 	QTableWidgetItem *item;
 	char buf[50];
-	for (cadence::doste::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
+	for (cadence::core::OID::iterator i = m_object.begin(); i != m_object.end(); i++) {
 		if ((*i) == This || (*i) == Key) continue;
 		m_modules->setRowCount(r+1);
 		(*i).toString(buf,50);
@@ -35,7 +35,7 @@ ModuleList::ModuleList() {
 	mainLayout->addWidget(m_modules);
 	setLayout(mainLayout);
 	
-	m_object = cadence::doste::root["modules"];
+	m_object = cadence::core::root["modules"];
 	
 	registerEvents();
 }

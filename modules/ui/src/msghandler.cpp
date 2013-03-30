@@ -4,7 +4,7 @@
 #include "browser.h"
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 OnEvent(MsgAgent, evt_error) {
 	if (get("error") == Null) return;
@@ -105,7 +105,7 @@ void MsgAgent::infoMessage(const char *msg) {
 	m_tabs->setCurrentWidget(this);
 }
 
-MsgAgent::MsgAgent(QTabWidget *tabs, const cadence::doste::OID &obj) : Agent(obj) {
+MsgAgent::MsgAgent(QTabWidget *tabs, const cadence::core::OID &obj) : Agent(obj) {
 	m_output = new QListWidget();
 	m_output->setSelectionMode(QAbstractItemView::NoSelection);
 	QVBoxLayout *mainLayout = new QVBoxLayout;
