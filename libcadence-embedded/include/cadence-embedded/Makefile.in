@@ -6,4 +6,4 @@ HEADERS=agent.h agenthandler.h cadence.h dasm.h directory.h dll.h dmsg.h dstring
 install::
 	install -d "$(HEADER_PATH)"
 	install $(HEADERS) "$(HEADER_PATH)"
-	cd doste; make install
+	cd core; make install

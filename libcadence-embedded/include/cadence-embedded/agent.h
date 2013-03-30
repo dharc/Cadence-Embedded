@@ -23,14 +23,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
  
-#ifndef _doste_AGENT_H_
-#define _doste_AGENT_H_
+#ifndef _CADENCE_AGENT_H_
+#define _CADENCE_AGENT_H_
 
-#include <cadence/doste/oid.h>
-#include <cadence/vector.h>
-#include <cadence/doste/event.h>
-#include <cadence/object.h>
-#include <cadence/agenthandler.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/vector.h>
+#include <cadence-embedded/core/event.h>
+#include <cadence-embedded/object.h>
+#include <cadence-embedded/agenthandler.h>
 
 #define IMPLEMENT_EVENTS(A,B)	template <int I> inline void meta_reg_##A(A *o) { \
 					o->regEvt<I>(); \
@@ -76,7 +76,7 @@
 #define OnEvent(j,i) 	template <> void j::regEvt<j::num_##i>() { reg_##i(); } \
 			template <> void j::evalEvt<j::num_##i>(int aid, int eid)
 
-#define E(A) (A)(cadence::doste::modifiers::Seq)
+#define E(A) (A)(cadence::core::modifiers::Seq)
 #define DEPENDENCY(A,B) (OID::local() + OID(0,0,15,0)).dependency(A,B,aid);
 
 namespace cadence {
@@ -100,7 +100,7 @@ namespace cadence {
 		virtual bool notify(int aid, int id) { return false; }
 
 		virtual bool handler(int id) { return false; }
-		void addEvent(int id, doste::Definition def) { AgentHandler::add(this, id+10000, def, 0); }
+		void addEvent(int id, core::Definition def) { AgentHandler::add(this, id+10000, def, 0); }
 
 		/**
 		 * Yield your agent thread. This can only be called from within an event.

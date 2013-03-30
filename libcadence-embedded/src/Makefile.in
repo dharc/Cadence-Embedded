@@ -7,15 +7,17 @@ CPPFLAGS=@CXXFLAGS@
 LDFLAGS=@LDFLAGS@
 INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
 
-SOURCES=memory.cpp agenthandler.cpp dasm.cpp directory.cpp cadence.cpp messages.cpp module.cpp notation.cpp softagent.cpp
+SOURCES=memory.cpp agenthandler.cpp directory.cpp cadence.cpp messages.cpp module.cpp notation.cpp softagent.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 LIB=libcadence-embedded.so
-DOSTEOBJ=./doste/libdoste.a ./library/libcadencelib.a
+DOSTEOBJ=./core/libcadencecore.a ./notations/libcadencenotations.a ./handlers/libcadencehandlers.a ./library/libcadencelib.a
 
 all: $(SOURCES) $(LIB)
 
 $(LIB): $(OBJECTS)
-	cd doste; make
+	cd core; make
+	cd handlers; make
+	cd notations; make
 	cd library; make
 	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS) $(DOSTEOBJ)
 
@@ -24,5 +26,7 @@ $(LIB): $(OBJECTS)
 
 clean:
 	rm -f *.o
-	cd doste; make clean
+	cd core; make clean
+	cd notations; make clean
+	cd handlers; make clean
 	cd library; make clean

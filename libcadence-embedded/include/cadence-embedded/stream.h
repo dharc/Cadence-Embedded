@@ -24,10 +24,10 @@
  */
 
 
-#ifndef _doste_STREAM_H_
-#define _doste_STREAM_H_
+#ifndef _CADENCE_STREAM_H_
+#define _CADENCE_STREAM_H_
 
-#include <cadence/dll.h>
+#include <cadence-embedded/dll.h>
 
 namespace cadence {
 	/**

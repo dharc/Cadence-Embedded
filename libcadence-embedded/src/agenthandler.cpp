@@ -22,13 +22,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/agenthandler.h>
-#include <cadence/agent.h>
-#include <cadence/doste/event.h>
-#include <cadence/memory.h>
+#include <cadence-embedded/agenthandler.h>
+#include <cadence-embedded/agent.h>
+#include <cadence-embedded/core/event.h>
+#include <cadence-embedded/memory.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 Vector<AgentHandler::AgentEntry*> AgentHandler::s_agents;
 AgentHandler::AgentQueue AgentHandler::s_queues[2];
@@ -59,7 +59,7 @@ bool AgentHandler::handle(Event &evt) {
 		
 		//Evaluate condition
 		OID res = s_agents[evt.param<0>()]->cond.evaluate(OID::local()+OID(0,0,15,0), evt.param<0>());
-		if (((s_agents[evt.param<0>()]->flags & AE_CONDITIONAL) == 0) || (res == doste::True)) {
+		if (((s_agents[evt.param<0>()]->flags & AE_CONDITIONAL) == 0) || (res == core::True)) {
 			//Check immediate
 			//if (s_agents[evt.param<0>()]->flags & AE_IMMEDIATE) {
 				s_agents[evt.param<0>()]->agent->notify(evt.param<0>(), s_agents[evt.param<0>()]->localid);

@@ -22,8 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/dmsg.h>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/dmsg.h>
+#include <cadence-embedded/core/oid.h>
 #include <iostream>
 
 #ifdef WIN32
@@ -32,7 +32,7 @@
 #endif
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 namespace cadence {
 

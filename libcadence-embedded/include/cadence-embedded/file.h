@@ -23,14 +23,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_FILE_H_
-#define _doste_FILE_H_
+#ifndef _CADENCE_FILE_H_
+#define _CADENCE_FILE_H_
 
-#include <cadence/object.h>
-#include <cadence/dstring.h>
-#include <cadence/stream.h>
+#include <cadence-embedded/object.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/stream.h>
 #include <fstream>
-#include <cadence/dll.h>
+#include <cadence-embedded/dll.h>
 
 #ifdef _MSC_VER
 #pragma warning ( disable : 4251 )

@@ -1,5 +1,5 @@
-#include <cadence/directory.h>
-#include <cadence/doste/event.h>
+#include <cadence-embedded/directory.h>
+#include <cadence-embedded/core/event.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -14,7 +14,7 @@
 #endif
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 Directory::Directory() : Handler(OID(0,101,0,0), OID(0,101,0,100000)) {
 	addDirectory(".", ".");
@@ -35,19 +35,19 @@ bool Directory::handle(Event &evt) {
 	}
 }
 
-doste::OID Directory::lookupEntry(int id, const doste::OID &entry) {
-	if (id < 0 || id >= m_dirs.size()) return doste::Null;
+core::OID Directory::lookupEntry(int id, const core::OID &entry) {
+	if (id < 0 || id >= m_dirs.size()) return core::Null;
 
 	DirEntry *dir = m_dirs[id];
 
 	if (entry.isLongLong()) {
 		if (!dir->available) search(dir);
-		if ((int)entry < 0 || (int)entry >= dir->size) return doste::Null;
+		if ((int)entry < 0 || (int)entry >= dir->size) return core::Null;
 		return dir->entries[(int)entry];
 	} else {
 		if (entry == OID("name")) {
 			return dir->name;
-		} else if (entry == doste::Size) {
+		} else if (entry == core::Size) {
 			if (!dir->available) search(dir);
 			return dir->size;
 		} else {
@@ -127,9 +127,9 @@ void Directory::search(DirEntry *ent) {
 	ent->size = n;
 }
 
-doste::OID Directory::addFile(const char *path, const char* name) {
-	doste::OID nf = OID::create();
-	nf.set(doste::Type, OID("LocalFile"), true);
+core::OID Directory::addFile(const char *path, const char* name) {
+	core::OID nf = OID::create();
+	nf.set(core::Type, OID("LocalFile"), true);
 	nf.set("filename", dstring(name, true), true);
 	nf.set("base", dstring(path, true), true);
 
@@ -139,7 +139,7 @@ doste::OID Directory::addFile(const char *path, const char* name) {
 	return nf;
 }
 
-doste::OID Directory::addDirectory(const char *path, const char* name) {
+core::OID Directory::addDirectory(const char *path, const char* name) {
 	DirEntry *nd = new DirEntry;
 	nd->available = false;
 	nd->size = 0;

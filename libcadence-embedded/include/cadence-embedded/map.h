@@ -23,11 +23,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_MAP_H_
-#define _doste_MAP_H_
+#ifndef _CADENCE_MAP_H_
+#define _CADENCE_MAP_H_
 
-#include <cadence/vector.h>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/vector.h>
+#include <cadence-embedded/core/oid.h>
 
 namespace cadence {
 
@@ -35,10 +35,10 @@ namespace cadence {
 		public:
 		
 		MapPair() {};
-		MapPair(const doste::OID &k, const doste::OID &v) : key(k), value(v) {};
+		MapPair(const core::OID &k, const core::OID &v) : key(k), value(v) {};
 		
-		doste::OID key;
-		doste::OID value;
+		core::OID key;
+		core::OID value;
 	};
 
 	/**
@@ -52,7 +52,7 @@ namespace cadence {
 
 		static const unsigned int MAP_SIZE = 1000;
 		
-		doste::OID operator[](const doste::OID &o) {
+		core::OID operator[](const core::OID &o) {
 			int hash = hashOID(o);
 			
 			for (int i=0; i<m_table[hash].size(); i++) {
@@ -60,15 +60,15 @@ namespace cadence {
 					return m_table[hash].get(i).value;
 			}
 			
-			return doste::Null;
+			return core::Null;
 		};
 		
-		void add (const doste::OID &o, const doste::OID &v) {
+		void add (const core::OID &o, const core::OID &v) {
 			int hash = hashOID(o);
 			m_table[hash].add(MapPair(o,v));
 		};
 		
-		void remove(const doste::OID &o) {
+		void remove(const core::OID &o) {
 			int hash = hashOID(o);
 			for (int i=0; i<m_table[hash].size(); i++) {
 				if (m_table[hash].get(i).key == o)
@@ -127,7 +127,7 @@ namespace cadence {
 		
 		private:
 		
-		int hashOID(const doste::OID &o) {
+		int hashOID(const core::OID &o) {
 			return o.d() % MAP_SIZE;
 		};
 		

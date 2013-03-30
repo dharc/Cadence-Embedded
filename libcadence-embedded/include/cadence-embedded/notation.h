@@ -24,13 +24,13 @@
  */
 
 
-#ifndef _doste_NOTATION_H_
-#define _doste_NOTATION_H_
+#ifndef _CADENCE_NOTATION_H_
+#define _CADENCE_NOTATION_H_
 
-#include <cadence/stream.h>
-#include <cadence/vector.h>
-#include <cadence/doste/oid.h>
-#include <cadence/agent.h>
+#include <cadence-embedded/stream.h>
+#include <cadence-embedded/vector.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/agent.h>
 
 namespace cadence {
 	class XARAIMPORT Notation : public Agent {
@@ -44,7 +44,7 @@ namespace cadence {
 		
 		Stream *stream;
 		
-		virtual bool statement(const doste::OID &) { return false; };	//Implement this are the first parse point.
+		virtual bool statement(const core::OID &) { return false; };	//Implement this are the first parse point.
 
 		OID run(const char *filename, const OID &base);
 		OID execute(const char *str) { return execute(str, get("root")); };
@@ -79,9 +79,9 @@ namespace cadence {
 };
 
 /** Macro to write dasm code in c++ */
-#include <cadence/doste/doste.h>
-#define _DASM(A) ((cadence::Notation*)(cadence::doste::root.get("notations").get("dasm")))->execute(#A, *this)
-#define _DASM2(A) ((cadence::Notation*)(cadence::doste::root.get("notations").get("dasm")))->execute(#A, cadence::doste::root)
+#include <cadence-embedded/core/core.h>
+#define _DASM(A) ((cadence::Notation*)(cadence::core::root.get("notations").get("dasm")))->execute(#A, *this)
+#define _DASM2(A) ((cadence::Notation*)(cadence::core::root.get("notations").get("dasm")))->execute(#A, cadence::core::root)
 
 
 #endif

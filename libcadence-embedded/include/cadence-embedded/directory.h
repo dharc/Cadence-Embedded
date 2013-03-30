@@ -4,9 +4,9 @@
 #define _DOSTE_DIRECTORY_H_
 
 
-#include <cadence/doste/handler.h>
-#include <cadence/dstring.h>
-#include <cadence/vector.h>
+#include <cadence-embedded/core/handler.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/vector.h>
 
 #undef MAX_PATH //damn windows
 #define MAX_PATH	400
@@ -17,24 +17,24 @@ namespace cadence {
 		bool available;
 		dstring name;
 		char path[MAX_PATH];
-		doste::OID entries[MAX_ENTRIES];
+		core::OID entries[MAX_ENTRIES];
 		int size;
 	};
 
-	class Directory : public doste::Handler {
+	class Directory : public core::Handler {
 		public:
 		Directory();
 		~Directory();
 
-		bool handle(doste::Event &evt);
+		bool handle(core::Event &evt);
 
 		private:
 		Vector<DirEntry*> m_dirs;
 
 		void search(DirEntry *ent);
-		doste::OID addDirectory(const char *, const char *);
-		doste::OID addFile(const char *, const char *);
-		doste::OID lookupEntry(int id, const doste::OID &entry);
+		core::OID addDirectory(const char *, const char *);
+		core::OID addFile(const char *, const char *);
+		core::OID lookupEntry(int id, const core::OID &entry);
 	};
 };
 

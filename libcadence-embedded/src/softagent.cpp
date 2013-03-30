@@ -23,10 +23,10 @@
  */
 
 #include "softagent.h"
-#include <cadence/messages.h>
+#include <cadence-embedded/messages.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 SoftAgent::SoftAgent() : m_aid(-1) {
 	//std::cout << "Making Soft Agent2\n";

@@ -22,16 +22,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/notation.h>
-#include <cadence/file.h>
-#include <cadence/messages.h>
-#include <cadence/doste/doste.h>
-#include <cadence/messages.h>
-#include <cadence/memory.h>
+#include <cadence-embedded/notation.h>
+#include <cadence-embedded/file.h>
+#include <cadence-embedded/messages.h>
+#include <cadence-embedded/core/core.h>
+#include <cadence-embedded/messages.h>
+#include <cadence-embedded/memory.h>
 #include <string.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 namespace cadence {
 	OnEvent(Notation, evt_run) {
@@ -52,7 +52,7 @@ namespace cadence {
 		}
 
 		Info(Info::LOADING, "Loading script " + sfile);
-		OID res = execute(s, cadence::doste::root);
+		OID res = execute(s, cadence::core::root);
 		s->close();
 	}
 	
@@ -61,7 +61,7 @@ namespace cadence {
 
 		dstring s(get("execute"));
 		//std::cout << "Executing: " << (const char*)s << "\n";
-		execute((const char *)s, cadence::doste::root);
+		execute((const char *)s, cadence::core::root);
 	}
 	
 	IMPLEMENT_EVENTS(Notation, Agent);

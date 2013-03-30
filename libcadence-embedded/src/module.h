@@ -26,7 +26,7 @@
 #ifndef _doste_MODULE_H_
 #define _doste_MODULE_H_
 
-#include <cadence/agent.h>
+#include <cadence-embedded/agent.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -63,7 +63,7 @@ namespace cadence {
 		void *m_init;
 		bool m_docreate;
 		bool m_doupdate;
-		doste::OID m_base;
+		core::OID m_base;
 		double m_ltime;
 		double m_freq;
 		

@@ -24,12 +24,12 @@
 
 #include "module.h"
 
-#include <cadence/file.h>
-#include <cadence/messages.h>
-#include <cadence/memory.h>
+#include <cadence-embedded/file.h>
+#include <cadence-embedded/messages.h>
+#include <cadence-embedded/memory.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 #ifdef _MSC_VER
 #pragma warning(disable:4996)

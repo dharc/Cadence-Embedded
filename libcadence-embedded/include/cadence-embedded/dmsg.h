@@ -23,11 +23,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_DMSG_H_
-#define _doste_DMSG_H_
+#ifndef _CADENCE_DMSG_H_
+#define _CADENCE_DMSG_H_
 
-#include <cadence/dstring.h>
-#include <cadence/dll.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/dll.h>
 
 #undef ERROR
 
@@ -48,7 +48,7 @@ namespace cadence {
 		typedef unsigned int MsgFormatter;
 
 		friend XARAIMPORT DMsg &operator<<(DMsg &m, const char *str);
-		friend XARAIMPORT DMsg &operator<<(DMsg &m, const doste::OID &o);
+		friend XARAIMPORT DMsg &operator<<(DMsg &m, const core::OID &o);
 		friend XARAIMPORT DMsg &operator<<(DMsg &m, int v);
 		friend XARAIMPORT DMsg &operator<<(DMsg &m, DMsg::MsgFormatter f);
 		

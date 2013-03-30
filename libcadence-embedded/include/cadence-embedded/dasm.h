@@ -23,10 +23,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_DASM_H_
-#define _doste_DASM_H_
+#ifndef _CADENCE_DASM_H_
+#define _CADENCE_DASM_H_
 
-#include <cadence/notation.h>
+#include <cadence-embedded/notation.h>
 
 #ifdef _MSC_VER
 #pragma warning ( disable : 4996 )
@@ -42,10 +42,10 @@ namespace cadence {
 		DASM(const OID &obj);
 		~DASM();
 		
-		bool statement(const doste::OID &);
+		bool statement(const core::OID &);
 		
-		PROPERTY_RF(doste::OID, variables, "variables");
-		PROPERTY_WF(doste::OID, variables, "variables");
+		PROPERTY_RF(core::OID, variables, "variables");
+		PROPERTY_WF(core::OID, variables, "variables");
 
 		void error(const char *message);
 		
@@ -58,7 +58,7 @@ namespace cadence {
 		bool parseSelect(int &i, OID &cur, bool imed=false);
 		
 		//current base object
-		doste::OID m_base;
+		core::OID m_base;
 	};
 };
 

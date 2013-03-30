@@ -24,17 +24,17 @@
 
 #include "context.h"
 
-using namespace cadence::doste;
+using namespace cadence::core;
 
 Context::~Context() {
-	convertVOs();
-	for (int i=0; i<m_vos.size(); i++) {
-		delete m_vos[i];
-	}
+	//convertVOs();
+	//for (int i=0; i<m_vos.size(); i++) {
+	//	delete m_vos[i];
+	//}
 }
 
-void Context::convertVOs() {
-	for (int i=0; i<m_vos.size(); i++) {
-		if (m_vos[i]->m_convert) m_vos[i]->convert();
-	}
-}
+//void Context::convertVOs() {
+//	for (int i=0; i<m_vos.size(); i++) {
+//		if (m_vos[i]->m_convert) m_vos[i]->convert();
+//	}
+//}

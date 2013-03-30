@@ -22,13 +22,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_SOFTAGENT_H_
-#define _doste_SOFTAGENT_H_
+#ifndef _CADENCE_SOFTAGENT_H_
+#define _CADENCE_SOFTAGENT_H_
 
-#include <cadence/agent.h>
+#include <cadence-embedded/agent.h>
 
 namespace cadence {
-	namespace doste {
+	namespace core {
 		class OID;
 	};
 	
@@ -38,7 +38,7 @@ namespace cadence {
 		OBJECT(Agent,SoftAgent);
 		
 		SoftAgent();
-		SoftAgent(const doste::OID &obj);
+		SoftAgent(const core::OID &obj);
 		~SoftAgent();
 		
 		bool notify(int aid, int id);
@@ -49,8 +49,8 @@ namespace cadence {
 		PROPERTY_RF(bool, conditional, "condition");
 		PROPERTY_WF(bool, conditional, "condition");
 		
-		PROPERTY_RF(doste::OID, code, "code");
-		PROPERTY_WF(doste::OID, code, "code");
+		PROPERTY_RF(core::OID, code, "code");
+		PROPERTY_WF(core::OID, code, "code");
 		
 		//Events to detect object, observable or code changes.
 		void onTriggerChange();

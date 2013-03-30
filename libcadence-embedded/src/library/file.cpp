@@ -22,13 +22,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/file.h>
+#include <cadence-embedded/file.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h> 
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 char *LocalFile::s_path[20];
 

@@ -24,45 +24,45 @@
  */
 
 
-#ifndef _doste_OBJECT_H_
-#define _doste_OBJECT_H_
+#ifndef _CADENCE_OBJECT_H_
+#define _CADENCE_OBJECT_H_
 
-#include <cadence/dmsg.h>
-#include <cadence/doste/oid.h>
+#include <cadence-embedded/dmsg.h>
+#include <cadence-embedded/core/oid.h>
 //#include <doste/agent.h>
-#include <cadence/map.h>
-#include <cadence/list.h>
-#include <cadence/doste/type_traits.h>
+#include <cadence-embedded/map.h>
+#include <cadence-embedded/list.h>
+#include <cadence-embedded/core/type_traits.h>
 
-#define OBJECT_BASE(j)		static cadence::doste::OID type() { return #j; }; \
-				static cadence::Object* construct(const cadence::doste::OID &o){ return new j( o ); }; \
-				virtual bool isa(const cadence::doste::OID &t) { if (type() == t) return true; else return false; };
+#define OBJECT_BASE(j)		static cadence::core::OID type() { return #j; }; \
+				static cadence::Object* construct(const cadence::core::OID &o){ return new j( o ); }; \
+				virtual bool isa(const cadence::core::OID &t) { if (type() == t) return true; else return false; };
 
-#define OBJECT(k,j)	static cadence::doste::OID type() { return #j; }; \
-			static cadence::Object* construct(const cadence::doste::OID &o){ return new j( o ); }; \
-			virtual bool isa(const cadence::doste::OID &t) { if (type() == t) return true; else return k::isa(t); }; 
+#define OBJECT(k,j)	static cadence::core::OID type() { return #j; }; \
+			static cadence::Object* construct(const cadence::core::OID &o){ return new j( o ); }; \
+			virtual bool isa(const cadence::core::OID &t) { if (type() == t) return true; else return k::isa(t); }; 
 
 			/*void operator delete(void *p) { free(p); }
 			void *operator new(size_t s, bool nop, bool nop2) { return malloc(s); } \
-			void *operator new(size_t s) { OID b = doste::OID::create(); b.set("type", #j); return Object::convert<j>(b); } \
-			void *operator new(size_t s, const doste::OID &b) { return Object::convert<j>(b); }*/
+			void *operator new(size_t s) { OID b = core::OID::create(); b.set("type", #j); return Object::convert<j>(b); } \
+			void *operator new(size_t s, const core::OID &b) { return Object::convert<j>(b); }*/
 
-#define VOBJECT(k,i)	static cadence::doste::OID type() { return #i; }; \
-			virtual bool isa(const cadence::doste::OID &t) { if (type() == t) return true; else return k::isa(t); } \
+#define VOBJECT(k,i)	static cadence::core::OID type() { return #i; }; \
+			virtual bool isa(const cadence::core::OID &t) { if (type() == t) return true; else return k::isa(t); } \
 			
 //#undef THIS
 //#define THIS static_cast<doste::dvm::OID>(*this)
 
 #ifdef WIN32
-#define PROPERTY_R(T, A)	cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type __stdcall A() const { return get_value<T>(#A, cadence::doste::is_pod<T>()); };
-#define PROPERTY_RF(T, A, B)	cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type __stdcall A() const { return get_value<T>(B, cadence::doste::is_pod<T>()); };
+#define PROPERTY_R(T, A)	cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type __stdcall A() const { return get_value<T>(#A, cadence::core::is_pod<T>()); };
+#define PROPERTY_RF(T, A, B)	cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type __stdcall A() const { return get_value<T>(B, cadence::core::is_pod<T>()); };
 #else
-#define PROPERTY_R(T, A)	cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type A() const { return get_value<T>(#A, cadence::doste::is_pod<T>()); };
-#define PROPERTY_RF(T, A, B)	cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type A() const { return get_value<T>(B, cadence::doste::is_pod<T>()); };
+#define PROPERTY_R(T, A)	cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type A() const { return get_value<T>(#A, cadence::core::is_pod<T>()); };
+#define PROPERTY_RF(T, A, B)	cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type A() const { return get_value<T>(B, cadence::core::is_pod<T>()); };
 #endif
 
-#define PROPERTY_W(T, A)	void A(const cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type &v) { set_value<T>(#A, v, cadence::doste::is_pod<T>()); };
-#define PROPERTY_WF(T, A, B)	void A(const cadence::make_pointer< T, cadence::doste::is_pod<T>::value >::type &v) { set_value<T>(B, v, cadence::doste::is_pod<T>()); };
+#define PROPERTY_W(T, A)	void A(const cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type &v) { set_value<T>(#A, v, cadence::core::is_pod<T>()); };
+#define PROPERTY_WF(T, A, B)	void A(const cadence::make_pointer< T, cadence::core::is_pod<T>::value >::type &v) { set_value<T>(B, v, cadence::core::is_pod<T>()); };
 
 #define PROPERTY_RW(T, A)	PROPERTY_R(T,A); PROPERTY_W(T,A)
 #define PROPERTY_RWF(T,A,B)	PROPERTY_RF(T,A,B); PROPERTY_WF(T,A,B)
@@ -95,7 +95,7 @@ namespace cadence {
 	 * Generally you would want to inherit Agent instead which provides extra
 	 * functionality in the form of event handling.
 	*/
-	class XARAIMPORT Object : public cadence::doste::OID {
+	class XARAIMPORT Object : public cadence::core::OID {
 		public:
 		
 		OBJECT_BASE(Object);
@@ -118,7 +118,7 @@ namespace cadence {
 		 * instead of directly using this constructor.
 		 * @param obj The object id for the database object.
 		 */
-		Object(const cadence::doste::OID &obj)
+		Object(const cadence::core::OID &obj)
 		 : OID(obj) {
 		 	s_map.add(*this, (void*)this);
 			s_list.addFront(this);
@@ -137,7 +137,7 @@ namespace cadence {
 
 		/** @return The OID for this C++ object */
 		operator OID() {
-			return static_cast<cadence::doste::OID>(*this);
+			return static_cast<cadence::core::OID>(*this);
 		};
 		
 		/**
@@ -185,26 +185,26 @@ namespace cadence {
 		 * retrieved from the database. Is it a primitive type or an Object?
 		 */
 		template <typename T>
-		inline T get_value(const OID &k, doste::true_type) const { return (T)((OID)(*this)[k]); };
+		inline T get_value(const OID &k, core::true_type) const { return (T)((OID)(*this)[k]); };
 		template <typename T>
-		inline T *get_value(const OID &k, doste::false_type) const { return getObject<T>(k); };
+		inline T *get_value(const OID &k, core::false_type) const { return getObject<T>(k); };
 
 		template <typename T>
-		inline void set_reuse(const OID &k, const T &v, doste::true_type) {
-			doste::OID o = get(k);
-			if (o == doste::Null) {
-				o = doste::OID::create();
+		inline void set_reuse(const OID &k, const T &v, core::true_type) {
+			core::OID o = get(k);
+			if (o == core::Null) {
+				o = core::OID::create();
 				set(k, o);
 			}
 			v.fillObject(o);
 		}
 		template <typename T>
-		inline void set_reuse(const OID &k, const T &v, doste::false_type) { set(k,v,false); }
+		inline void set_reuse(const OID &k, const T &v, core::false_type) { set(k,v,false); }
 
 		template <typename T>
-		inline void set_value(const OID &k, const T &v, doste::true_type) { set_reuse(k,v, doste::is_reuseable<T>()); };
+		inline void set_value(const OID &k, const T &v, core::true_type) { set_reuse(k,v, core::is_reuseable<T>()); };
 		template <typename T>
-		inline void set_value(const OID &k, const T *v, doste::false_type) { set(k,*v, false); };
+		inline void set_value(const OID &k, const T *v, core::false_type) { set(k,*v, false); };
 		
 		private:
 		bool noremove;
@@ -218,7 +218,7 @@ namespace cadence {
 template <typename T>
 T *cadence::Object::convert(const OID &o) {
 	//not an object
-	if(o==doste::Null) return 0;
+	if(o==core::Null) return 0;
 	
 	//Lookup C++ pointer in map
 	Object *obj = (Object*)(void*)s_map[o];
@@ -233,18 +233,18 @@ T *cadence::Object::convert(const OID &o) {
 		}
 	} else {
 		//Haxy solution to automatically set type on first use.
-		doste::OID ttype = o.get(doste::Type);
-		if (ttype == doste::Null) {
-			o.set(doste::Type, T::type(), true);
+		core::OID ttype = o.get(core::Type);
+		if (ttype == core::Null) {
+			o.set(core::Type, T::type(), true);
 			ttype = T::type();
 		}
 		
 		
 		//If not exist then construct as correct object type
-		if (s_reg[ttype] != doste::Null) {
+		if (s_reg[ttype] != core::Null) {
 			obj = ((Object *(*)(const OID &))(void*)(s_reg[ttype]))(o);
 			//Check RTTI again
-			if (o.get(doste::Type)==doste::Null || obj->isa(T::type())) return (T*)obj;
+			if (o.get(core::Type)==core::Null || obj->isa(T::type())) return (T*)obj;
 			else {
 				DMsg msg(DMsg::WARNING);
 				msg << o << " is not a " << T::type() << "\n";
@@ -252,7 +252,7 @@ T *cadence::Object::convert(const OID &o) {
 			}
 		} else {
 			//Give a warning about unregistered type
-			if (o.get(doste::Type) != doste::Null) {
+			if (o.get(core::Type) != core::Null) {
 				DMsg msg(DMsg::WARNING);
 				msg << "What is a " << ttype << "\n";
 			}
@@ -268,17 +268,17 @@ void cadence::Object::registerType() {
 
 
 template <typename T>
-T *cadence::doste::OID::get(const OID &o) const {
+T *cadence::core::OID::get(const OID &o) const {
 	return cadence::Object::convert<T>(*this);
 }
 
 template <typename T>
-void cadence::doste::OID::set(const OID &key, T *value, bool async) const {
+void cadence::core::OID::set(const OID &key, T *value, bool async) const {
 	set(key, *value, async);
 }
 
 namespace cadence {
-	namespace doste {
+	namespace core {
 		template <>
 		inline void OID::set<void>(const OID &key, void *value, bool async) const {
 			set(key, OID(value), async);
@@ -287,7 +287,7 @@ namespace cadence {
 };
 
 template <typename T>
-T *cadence::doste::OID::get_pointer(false_type) const {
+T *cadence::core::OID::get_pointer(false_type) const {
 	return cadence::Object::convert<T>(*this);
 }
 

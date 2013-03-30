@@ -22,18 +22,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/cadence.h>
-#include <cadence/doste/processor.h>
-#include <cadence/object.h>
-#include <cadence/agenthandler.h>
-#include <cadence/notation.h>
-#include <cadence/dstring.h>
-#include <cadence/memory.h>
+#include <cadence-embedded/cadence.h>
+#include <cadence-embedded/core/processor.h>
+#include <cadence-embedded/object.h>
+#include <cadence-embedded/agenthandler.h>
+#include <cadence-embedded/notation.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/memory.h>
 #include "module.h"
 #include "softagent.h"
-#include "dasm.h"
-#include <cadence/file.h>
-#include <cadence/directory.h>
+#include "notations/dasm.h"
+#include <cadence-embedded/file.h>
+#include <cadence-embedded/directory.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -72,7 +72,7 @@
 #undef ERROR
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 //DObject static data
 cadence::Map Object::s_map;
@@ -261,7 +261,7 @@ void cadence::initialise(int argc, char *argv[]) {
 					break;
 			case 't':	settime = false;
 					break;
-			case 'd':	cadence::doste::debug = atoi(argv[++i]);
+			case 'd':	cadence::core::debug = atoi(argv[++i]);
 					break;
 			case 'e':	arg_exec[ai++] = ++i;
 					break;
@@ -275,7 +275,7 @@ void cadence::initialise(int argc, char *argv[]) {
 		}
 	}
 
-	cadence::doste::initialise(base, n);
+	cadence::core::initialise(base, n);
 	cadence::LocalFile::initialise();
 	
 	new AgentHandler();
@@ -325,7 +325,7 @@ void cadence::finalise() {
 	#endif
 
 	Object::destroyAll();
-	cadence::doste::finalise();
+	cadence::core::finalise();
 	
 	if (interactive) {
 		//endwin();

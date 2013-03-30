@@ -23,12 +23,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_H_
-#define _doste_H_
+#ifndef _CADENCE_H_
+#define _CADENCE_H_
 
-#include <cadence/doste/doste.h>
-#include <cadence/agent.h>
-#include <cadence/notation.h>
+#include <cadence-embedded/core/core.h>
+#include <cadence-embedded/agent.h>
+#include <cadence-embedded/notation.h>
 
 /**
  * All doste components are within the doste namespace. Before using
@@ -54,9 +54,9 @@ namespace cadence {
 		
 		BEGIN_EVENTS(Agent);
 		EVENT(evt_cwd, (*this)("cwd"));
-		EVENT(evt_softagent, (*this)("agents")(cadence::doste::All));
-		EVENT(evt_notation, (*this)("notations")(cadence::doste::All));
-		EVENT(evt_modules, (*this)("modules")(cadence::doste::All));
+		EVENT(evt_softagent, (*this)("agents")(cadence::core::All));
+		EVENT(evt_notation, (*this)("notations")(cadence::core::All));
+		EVENT(evt_modules, (*this)("modules")(cadence::core::All));
 		EVENT(evt_cout, (*this)("cout"));
 		EVENT(evt_error, (*this)("error"));
 		EVENT(evt_warning, (*this)("warning"));

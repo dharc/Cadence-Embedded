@@ -24,11 +24,11 @@
  */
 
 
-#ifndef _doste_VECTOR_H_
-#define _doste_VECTOR_H_
+#ifndef _CADENCE_VECTOR_H_
+#define _CADENCE_VECTOR_H_
 
 #include <iostream>
-#include <cadence/dll.h>
+#include <cadence-embedded/dll.h>
 
 namespace cadence {
 

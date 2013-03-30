@@ -23,11 +23,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_MESSAGES_H_
-#define _doste_MESSAGES_H_
+#ifndef _CADENCE_MESSAGES_H_
+#define _CADENCE_MESSAGES_H_
 
-#include <cadence/dstring.h>
-#include <cadence/dll.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/dll.h>
 
 namespace cadence {
 	/**
@@ -48,7 +48,7 @@ namespace cadence {
 		 * @param msg A dstring containing the error message.
 		 */
 		Error(int id, cadence::dstring msg);
-		Error(int id, cadence::dstring msg, cadence::doste::OID obj, cadence::doste::OID key);
+		Error(int id, cadence::dstring msg, cadence::core::OID obj, cadence::core::OID key);
 		~Error() {}
 
 		static const int UNKNOWN = 0;		/**< An unknown error, yet to be given a number. */

@@ -22,14 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/dstring.h>
-#include <cadence/doste/processor.h>
-#include <cadence/doste/event.h>
+#include <cadence-embedded/dstring.h>
+#include <cadence-embedded/core/processor.h>
+#include <cadence-embedded/core/event.h>
 #include <string.h>
-#include <cadence/doste/buffer.h>
+#include <cadence-embedded/core/buffer.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 DString::DString() : m_buffer(0) {
 	m_obj = OID::create();

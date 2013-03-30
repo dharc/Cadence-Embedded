@@ -23,28 +23,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_AGENTHANDLER_H_
-#define _doste_AGENTHANDLER_H_
+#ifndef _CADENCE_AGENTHANDLER_H_
+#define _CADENCE_AGENTHANDLER_H_
 
-#include <cadence/doste/handler.h>
-#include <cadence/doste/definition.h>
-#include <cadence/vector.h>
+#include <cadence-embedded/core/handler.h>
+#include <cadence-embedded/core/definition.h>
+#include <cadence-embedded/vector.h>
 
 namespace cadence {
-	namespace doste {
+	namespace core {
 		class Event;
 	};
 	class BaseAgent;
 
-	class XARAIMPORT AgentHandler : public doste::Handler {
+	class XARAIMPORT AgentHandler : public core::Handler {
 		public:
 		AgentHandler();
 		~AgentHandler();
 
-		bool handle(doste::Event &evt);
+		bool handle(core::Event &evt);
 
-		static int add(BaseAgent *agent, int id, doste::Definition cond, unsigned int flags);
-		static void update(int aid, BaseAgent *agent, int id, doste::Definition cond, unsigned int flags);
+		static int add(BaseAgent *agent, int id, core::Definition cond, unsigned int flags);
+		static void update(int aid, BaseAgent *agent, int id, core::Definition cond, unsigned int flags);
 		static void remove(int id);
 		static void remove(BaseAgent *agent, int id);
 		static void remove(BaseAgent *agent);
@@ -59,7 +59,7 @@ namespace cadence {
 		struct AgentEntry {
 			BaseAgent *agent;
 			int localid;
-			doste::Definition cond;
+			core::Definition cond;
 			unsigned int flags;
 		};
 

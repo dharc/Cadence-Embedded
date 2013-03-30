@@ -23,13 +23,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _doste_DSTRING_H_
-#define _doste_DSTRING_H_
+#ifndef _CADENCE_DSTRING_H_
+#define _CADENCE_DSTRING_H_
 
-#include <cadence/doste/oid.h>
-#include <cadence/doste/type_traits.h>
+#include <cadence-embedded/core/oid.h>
+#include <cadence-embedded/core/type_traits.h>
 
-#include <cadence/dll.h>
+#include <cadence-embedded/dll.h>
 
 namespace cadence {
 	/**
@@ -39,33 +39,33 @@ namespace cadence {
 		public:
 		DString();
 		DString(const char *str, bool async=false);
-		DString(doste::OID o);
+		DString(core::OID o);
 		~DString();
 		
 		void toString(char *str, int max);
 
-		int size() const { return m_obj[doste::Size]; };
+		int size() const { return m_obj[core::Size]; };
 		
-		operator doste::OID() const { return m_obj; };
+		operator core::OID() const { return m_obj; };
 		operator const char*();
 		
 		template <typename T>
-		friend DString operator+(DString m, T v) { return m + cadence::doste::OID(v); }
+		friend DString operator+(DString m, T v) { return m + cadence::core::OID(v); }
 		XARAIMPORT friend DString operator+(DString m, const char *str);
-		XARAIMPORT friend DString operator+(DString m, const cadence::doste::OID &o);
+		XARAIMPORT friend DString operator+(DString m, const cadence::core::OID &o);
 		XARAIMPORT friend DString operator+(DString m, const DString &str);
 		//friend bool operator==(const char *str);
 		//friend bool operator==(const DString &str);
 		
 		private:
-		doste::OID m_obj;
+		core::OID m_obj;
 		char *m_buffer;
 		//static char s_unsafe[1024];
 	};
 
 	typedef DString dstring;
 
-	namespace doste {
+	namespace core {
 		template <> class is_pod<DString> : public true_type {};
 	};
 };

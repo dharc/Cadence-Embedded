@@ -22,11 +22,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cadence/messages.h>
-#include <cadence/doste/doste.h>
+#include <cadence-embedded/messages.h>
+#include <cadence-embedded/core/core.h>
 
 using namespace cadence;
-using namespace cadence::doste;
+using namespace cadence::core;
 
 Error::Error(int id, dstring msg) {
 	OID err = OID::create();

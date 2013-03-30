@@ -24,11 +24,11 @@
  */
 
 
-#ifndef _doste_TOKEN_H_
-#define _doste_TOKEN_H_
+#ifndef _CADENCE_TOKEN_H_
+#define _CADENCE_TOKEN_H_
 
 #include <stdlib.h>
-#include <cadence/stream.h>
+#include <cadence-embedded/stream.h>
 
 namespace cadence {
 	
