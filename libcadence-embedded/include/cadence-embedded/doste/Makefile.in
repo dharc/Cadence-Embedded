@@ -1,8 +1,0 @@
-SHELL=/bin/sh
-HEADER_PATH=@prefix@/include/cadence-embedded/doste
-
-HEADERS=buffer.h coid.h definition.h doste.h event.h handler.h modifiers.h oid.h processor.h type_traits.h
-
-install::
-	install -d "$(HEADER_PATH)"
-	install $(HEADERS) "$(HEADER_PATH)"
