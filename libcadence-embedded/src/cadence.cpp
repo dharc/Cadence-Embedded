@@ -29,8 +29,8 @@
 #include <cadence-embedded/notation.h>
 #include <cadence-embedded/dstring.h>
 #include <cadence-embedded/memory.h>
-#include "module.h"
-#include "softagent.h"
+#include "agents/module.h"
+#include "agents/softagent.h"
 #include "notations/dasm.h"
 #include <cadence-embedded/file.h>
 #include <cadence-embedded/directory.h>

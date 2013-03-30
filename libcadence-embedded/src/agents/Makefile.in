@@ -7,9 +7,9 @@ CPPFLAGS=@CXXFLAGS@
 LDFLAGS=@LDFLAGS@
 INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
 
-SOURCES=local.cpp number.cpp directory.cpp agenthandler.cpp
+SOURCES=module.cpp notation.cpp softagent.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-LIB=libcadencehandlers.a
+LIB=libcadenceagents.a
 
 all: $(SOURCES) $(LIB)
 

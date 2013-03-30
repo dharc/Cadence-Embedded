@@ -27,7 +27,7 @@
 #include <cadence-embedded/core/modifiers.h>
 //#include <cadence/mutex.h>
 #include <cadence-embedded/memory.h>
-#include "../softagent.h"
+#include "../agents/softagent.h"
 
 using namespace cadence;
 using namespace cadence::core;
