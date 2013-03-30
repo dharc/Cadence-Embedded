@@ -1,0 +1,24 @@
+SHELL=/bin/sh
+
+CC=@CC@
+AR=ar
+CPP=@CXX@
+CPPFLAGS=@CXXFLAGS@
+LDFLAGS=@LDFLAGS@
+INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
+
+SOURCES=buffer.cpp context.cpp definition.cpp core.cpp event.cpp handler.cpp names.cpp oid.cpp processor.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+LIB=libcadencecore.a
+
+all: $(SOURCES) $(LIB)
+
+$(LIB): $(OBJECTS)
+	$(AR) cq $@ $(OBJECTS)
+
+.cpp.o:
+	$(CPP) -fPIC -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+clean:
+	rm -f *.o
+	rm -f *.a

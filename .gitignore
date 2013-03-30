@@ -1,0 +1,13 @@
+*.o
+Makefile
+configure
+config.status
+config.h
+config.log
+*.so
+autom4te.cache
+cadence-canvu
+cadence-canvu.bin
+*.a
+*.mk
+*~
