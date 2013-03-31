@@ -3,8 +3,8 @@ SHELL=/bin/sh
 CC=@CC@
 AR=ar
 CPP=@CXX@
-CPPFLAGS=@CXXFLAGS@
-LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CXXFLAGS@ @QTINCLUDES@
+LDFLAGS=@LDFLAGS@ @QTLIBS@
 INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
 BIN_PATH=@prefix@/bin
 
@@ -15,7 +15,7 @@ EXECUTABLE=cadence-embed.bin
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CPP) $(LDFLAGS) -L../libcadence-embedded -o ./$@ $(OBJECTS) -lcadence-embedded -ldl -lpthread
+	$(CPP) $(LDFLAGS) -L../libcadence-embedded -o ./$@ $(OBJECTS) -lcadence-embedded -ldl -lpthread @QTLIB_ACT@
 
 .cpp.o:
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES) $< -o $@

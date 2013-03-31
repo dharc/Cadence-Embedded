@@ -40,7 +40,7 @@ namespace cadence {
 	extern XARAIMPORT void initialise(int argc, char *argv[]);
 	extern XARAIMPORT void finalise();
 	extern XARAIMPORT void update();
-	extern XARAIMPORT void run();
+	extern XARAIMPORT void run(void (*)());
 	
 	void makepath(char *buffer, int path, const char *filename);
 	

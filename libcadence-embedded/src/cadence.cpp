@@ -337,24 +337,14 @@ void cadence::finalise() {
 }
 
 void cadence::update() {
-	//#ifdef LINUX
         ttime = ((double) getTicks() - (double) startticks) / 1000000.0;
-	//#endif
-	//#ifdef WIN32
-	//LARGE_INTEGER fq;
-	//QueryPerformanceFrequency(&fq);
-	//ttime = ((double)getTicks() - (double)startticks) / (double)(((unsigned long long)fq.HighPart << 32) + (unsigned long long)fq.LowPart);
-	//#endif
 
 	if (settime) root["time"] = ttime;
-	//root["frametime"] = ttime - ttime_last;
-	//std::cout << "Update FPS: " << 1.0 / (ttime - ttime_last) << "\n";
 
 	ttime_draw += (ttime - ttime_last);
 	dtime = (ttime - ttime_last);
 	ttime_last = ttime;
 
-	//Processor::processInstant();
 	Module::updateAll(dtime);
 }
 
@@ -362,18 +352,11 @@ void cadence::update() {
 typedef int socklen_t;
 #endif
 
-void cadence::run() {
+void cadence::run(void (*callback)()) {
 	char *ibuf = NEW char[10000];
 	int pos = 0;
 	int count;
-	//timeval block;
-	//int selres;
-	//sockaddr_in fromaddr;
-	//socklen_t fromlength;
 	OID res;
-	//fd_set fdread;
-	
-	//DASM dasm;
 	
 	#ifdef LINUX
 	fcntl(0, F_SETFL, O_NONBLOCK);
@@ -452,24 +435,8 @@ void cadence::run() {
 			}
 		}
 
-		//Processor::processAll();
-		//if (!Processor::processInstant() && settime) {
-		//	root["stable"] = Void;
-		//}
-		//AgentHandler::processAll();
-		
-		//if ((ttime_stat - ttime) >= 1.0) {
-		//	ttime_stat = ttime;
-		//	std::cout << "EPS: " << Processor::getEventCount() << "\n";
-		//}
-		
-		//Every 60th of a second call Module::updateAll();
-		//if (ttime_draw >= 0.016) {
-			//if (settime) root["frametime"] = ttime_draw;
-			//ttime_draw = 0.0;
-			//std::cout << "UPDATE ALL\n";
-			Module::updateAll(dtime);
-		//}
+		Module::updateAll(dtime);
+		if (callback) callback();
 	}
 
 	delete [] ibuf;

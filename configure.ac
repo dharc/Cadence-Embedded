@@ -299,6 +299,8 @@ CXXFLAGS="$CXXFLAGS -g -Wall -DLINUX "
 CFLAGS="-DLINUX -O3"
 LDFLAGS="$LDFLAGS -lpthread -ldl"
 
+TEMP_QTLIB_ACT="-lQtGui -lQtCore"
+
 #if test -f /local/java/qt-x11-opensource/bin/moc ; then
 #       QTMOC="/local/java/qt-x11-opensource/bin/moc"
 #       QTLIBS="-L/local/java/qt-x11-opensource/lib"
@@ -306,20 +308,20 @@ LDFLAGS="$LDFLAGS -lpthread -ldl"
 #else
         if test -f /usr/include/qt4/Qt/qlist.h; then
                 if test -f /usr/bin/moc-qt4; then
-                        QTMOC="moc-qt4"
+                        TEMP_QTMOC="moc-qt4"
                 else
-                        QTMOC="moc"
+                        TEMP_QTMOC="moc"
                 fi
-                QTINCLUDES="-I/usr/include/qt4 -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui"
-                QTLIBS=""
+                TEMP_QTINCLUDES="-I/usr/include/qt4 -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui"
+                TEMP_QTLIBS=""
         else
                 if test -f /usr/bin/moc-qt4; then
-                        QTMOC="moc-qt4"
+                        TEMP_QTMOC="moc-qt4"
                 else
-                        QTMOC="moc"
+                        TEMP_QTMOC="moc"
                 fi
-                QTINCLUDES="-I/usr/include/QtCore -I/usr/include/QtGui"
-                QTLIBS=""
+                TEMP_QTINCLUDES="-I/usr/include/QtCore -I/usr/include/QtGui"
+                TEMP_QTLIBS=""
 	fi
 #fi
 
@@ -328,9 +330,9 @@ if test "$target_cpu" == "x86_64"; then
 	LDFLAGS="$LDFLAGS -L/usr/X11R6/lib64"
 	MODULES="ui basic_agents"
 elif test "$target_cpu" == "arm"; then
-	QTMOC="/opt/CANvu-VM/Toolchain/QtIMX28/moc"
-        QTINCLUDES="-I/opt/CANvu-VM/SysRoots/IMX28/usr/include -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/Qt -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtCore -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtGui"
-        QTLIBS="-L/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
+	TEMP_QTMOC="/opt/CANvu-VM/Toolchain/QtIMX28/moc"
+        TEMP_QTINCLUDES="-I/opt/CANvu-VM/SysRoots/IMX28/usr/include -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/Qt -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtCore -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtGui"
+        TEMP_QTLIBS="-L/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
 	SYSROOT="/opt/CANvu-VM/SysRoots/IMX28"
 	LDFLAGS="$LDFLAGS -L/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
 	CXXFLAGS="$CXXFLAGS -DARM -marm --sysroot=$SYSROOT -mabi=aapcs-linux -mno-thumb-interwork -march=armv5te -Wno-psabi"
@@ -362,12 +364,25 @@ AC_ARG_ENABLE(debug,
 	]
 )
 
+AC_ARG_ENABLE(qt,
+	[  --enable-qt    Enable Qt graphics support],
+	[
+	CXXFLAGS="$CXXFLAGS -DQT"
+	CFLAGS="$CFLAGS -DQT"
+	QTMOC="$TEMP_QTMOC"
+	QTINCLUDES="$TEMP_QTINCLUDES"
+	QTLIBS="$TEMP_QTLIBS"
+	QTLIB_ACT="$TEMP_QTLIB_ACT"
+	]
+)
+
 # CXXFLAGS="$CXXFLAGS -I/usr/include/libxml++-2.6 -I/usr/include/glibmm-2.4"
 
 
 AC_SUBST(QTMOC)
 AC_SUBST(QTLIBS)
 AC_SUBST(QTINCLUDES)
+AC_SUBST(QTLIB_ACT)
 AC_SUBST(MODULES)
 
 AC_OUTPUT(Makefile libcadence-embedded/Makefile libcadence-embedded/include/Makefile libcadence-embedded/include/cadence-embedded/Makefile libcadence-embedded/include/cadence-embedded/core/Makefile libcadence-embedded/src/Makefile libcadence-embedded/src/agents/Makefile libcadence-embedded/src/notations/Makefile libcadence-embedded/src/handlers/Makefile libcadence-embedded/src/core/Makefile libcadence-embedded/src/library/Makefile libcadence-embedded/scripts/Makefile loader/Makefile loader/cadence-embed modules/Makefile modules/module.mk modules/module-src.mk modules/module-scripts.mk modules/module-data.mk modules/module-scripts-sub.mk modules/module-data-sub.mk modules/ui/Makefile modules/ui/src/Makefile modules/ui/data/Makefile modules/ui/data/ui/Makefile modules/ui/scripts/Makefile modules/ui/scripts/ui/Makefile modules/xnet/Makefile modules/xnet/src/Makefile modules/xnet/scripts/Makefile modules/xnet/scripts/xnet/Makefile modules/basic_agents/Makefile modules/basic_agents/src/Makefile modules/basic_agents/scripts/Makefile modules/basic_agents/scripts/agents/Makefile )
