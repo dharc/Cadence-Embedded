@@ -334,7 +334,7 @@ elif test "$target_cpu" == "arm"; then
         TEMP_QTINCLUDES="-I/opt/CANvu-VM/SysRoots/IMX28/usr/include -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/Qt -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtCore -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtGui"
         TEMP_QTLIBS="-L/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
 	SYSROOT="/opt/CANvu-VM/SysRoots/IMX28"
-	LDFLAGS="$LDFLAGS -L/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
+	LDFLAGS="$LDFLAGS -Wl,-rpath,/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
 	CXXFLAGS="$CXXFLAGS -DARM -marm --sysroot=$SYSROOT -mabi=aapcs-linux -mno-thumb-interwork -march=armv5te -Wno-psabi"
 	CXX="/opt/CANvu-VM/Toolchain/arm-2012.03/bin/arm-none-linux-gnueabi-g++"
 	MODULES="basic_agents"
