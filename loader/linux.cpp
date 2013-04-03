@@ -9,16 +9,17 @@
 
 using namespace cadence;
 
+Cadence vm;
+
 #ifdef QT
 QApplication *qtapp=0;
 int myargc = 0;
 char *myargv[] = { "", "-qws" };
-extern bool interactive;
 #endif
 
 void cadence_callback() {
 	#ifdef QT
-	if (interactive) {
+	if (vm.isInteractive()) {
 		if (qtapp) qtapp->processEvents();
 	} else {
 		if (qtapp) qtapp->processEvents(QEventLoop::WaitForMoreEvents);
@@ -36,13 +37,32 @@ int main(int argc, char *argv[]) {
 	#endif
 	#endif
 
-	cadence::initialise(argc, argv);
-
-	core::root["notations"]["dasm"]["run"] = NEW LocalFile("linux.dasm");
-	core::root["notations"]["dasm"]["run"] = NEW LocalFile("config.dasm");
+	vm.include("linux.dasm");
+	vm.include("config.dasm");
 	
-	cadence::run(cadence_callback);
-	cadence::finalise();
+	//Process command line arguments here.
+	for (int i=1; i<argc; i++) {
+		if (argv[i][0] == '-') {
+			switch (argv[i][1]) {
+			case 'b':	vm.setBaseOID(core::OID(argv[++i]));
+					break;
+			case 'n':	vm.setProcessorCount(atoi(argv[++i]));
+					break;
+			case 'i':	vm.setInteractive(true);
+					break;
+			case 't':	vm.setSetTime(false);
+					break;
+			case 'v':	vm.setDebug(atoi(argv[++i]));
+					break;
+			case 'e':	vm.include(argv[++i]);
+					break;
+
+			default:	break;
+			}
+		}
+	}	
+
+	vm.run(cadence_callback);
 
 	#ifdef QT
 	delete qtapp;

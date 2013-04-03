@@ -30,41 +30,97 @@
 #include <cadence-embedded/agent.h>
 #include <cadence-embedded/notation.h>
 
-/**
- * All doste components are within the doste namespace. Before using
- * doste you must call doste::initialise() and when finished call
- * doste::finalise().
- * @author Nicolas Pope
- */
 namespace cadence {
-	extern XARAIMPORT void initialise(int argc, char *argv[]);
-	extern XARAIMPORT void finalise();
-	extern XARAIMPORT void update();
-	extern XARAIMPORT void run(void (*)());
-	
-	void makepath(char *buffer, int path, const char *filename);
-	
-	static const int PATH_SCRIPTS = 1;
-	static const int PATH_MODULES = 2;
-	
-	class XAgent : public Agent {
+	/**
+	 * The master application object that must be created before anything
+	 * in the Cadence library is used. After construction the run method
+	 * is used to start up the virtual machine, but the VM should be
+	 * configured first.
+	 * @author Nicolas Pope
+	 */
+	class Cadence {
 		public:
-		XAgent(const OID &obj) : Agent(obj) { registerEvents(); };
-		~XAgent() {};
-		
-		BEGIN_EVENTS(Agent);
-		EVENT(evt_cwd, (*this)("cwd"));
-		EVENT(evt_softagent, (*this)("agents")(cadence::core::All));
-		EVENT(evt_notation, (*this)("notations")(cadence::core::All));
-		EVENT(evt_modules, (*this)("modules")(cadence::core::All));
-		EVENT(evt_cout, (*this)("cout"));
-		EVENT(evt_error, (*this)("error"));
-		EVENT(evt_warning, (*this)("warning"));
-		EVENT(evt_debug, (*this)("debug"));
-		EVENT(evt_info, (*this)("info"));
-		//Notation event
-		END_EVENTS;
-	};
+		Cadence();
+		~Cadence();
+
+		/**
+		 * Initialises the VM and begins the main run loop. This
+		 * function will then block until the VM is signalled to
+		 * terminate.
+		 * @param cb Callback function, called each pass through the loop.
+		 */
+		void run(void (*)());
+
+		/**
+		 * Enable command line interaction mode. This does increase
+		 * CPU usage to maximum so is only recommended as a debug
+		 * mechanism.
+		 * @param enabled Defaults to false.
+		 */
+		void setInteractive(bool b) { m_interactive = b; }
+
+		/**
+		 * Change the number of threads to be created by the virtual
+		 * machine for event processing. Typically this should be one
+		 * per core available.
+		 * @param n Number of threads. Defaults to 1.
+		 */
+		void setProcessorCount(int n) { m_n = n; }
+
+		/**
+		 * Each VM has a base Object IDentifier that specifies an OID
+		 * address space that it is responsible for and which it can
+		 * use to allocate new OIDs.
+		 * @param base Defaults to 1:0:0:0
+		 */
+		void setBaseOID(const core::OID &base) { m_base = base; }
+
+		/**
+		 * Change the debug output level. Only works when the VM is
+		 * compiled in DEBUG mode. Increasing the level number will
+		 * increase the amount of debug information displayed.
+		 * @param level Debug level between 0 and 5. Default is 0.
+		 */
+		void setDebug(int debug) { m_debug = debug; }
+
+		void setSetTime(bool b) { m_settime = b; }
+
+		bool isInteractive() { return m_interactive; }
+
+		void include(const char*);
+
+		/**
+		 * Used to generate a full file path using a particular search
+		 * order and environment variables. Checks local directory first
+		 * and then global paths.
+		 * @param buffer Resulting path is put into this buffer.
+		 * @param path Select type of file to look for.
+		 * @param filename The short path to be searched for.
+		 */
+		void makePath(char *buffer, int path, const char *filename);
+
+		static const int PATH_SCRIPTS = 1;
+		static const int PATH_MODULES = 2;
+
+		private:
+		void initialise();
+		long long getTicks();
+
+		core::OID m_base;
+		int m_debug;
+		bool m_interactive;
+		bool m_settime;
+		int m_n;
+		long long m_startticks;
+		double m_ttime;
+		double m_ttime_last;
+		double m_dtime;
+		double m_ttime_draw;
+		const char **m_toinclude;
+		int m_includeix;
+
+		static const unsigned int MAX_INCLUDES = 20;
+	};	
 };
 
 #endif

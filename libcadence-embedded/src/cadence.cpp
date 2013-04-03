@@ -41,11 +41,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <dlfcn.h>
-//#include <pthread.h>
 #include <fcntl.h>
-//#include <ncurses.h>
-//pthread_t uthread;
-//pthread_attr_t uattr;
 #endif
 
 #ifdef WIN32
@@ -54,22 +50,11 @@
 #include <conio.h>
 #endif
 
-#ifndef WIN32
-#include <errno.h>
+//#ifndef WIN32
+//#include <errno.h>
 
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-//#include <pthread.h>
-#endif
-
-#undef ERROR
+//#include <unistd.h>
+//#undef ERROR
 
 using namespace cadence;
 using namespace cadence::core;
@@ -79,27 +64,35 @@ cadence::Map Object::s_map;
 cadence::Map Object::s_reg;
 cadence::List<Object*> Object::s_list;
 
-bool interactive = false;
-bool settime = true;
-bool service = false;
-sockaddr_in localAddr;
-int service_sock = -1;
-
 OID dasm;
 
-double ttime;
-double ttime_last = 0.0;
-double ttime_draw = 0.0;
-double dtime = 0.0;
-long long startticks;
-
+//DUMMY Used by configure scripts.
 extern "C" {
 int cadence_check(int v) {
 	return v*v;
 }
 }
 
-void cadence::makepath(char *buffer, int path, const char *filename) {
+class XAgent : public Agent {
+	public:
+	XAgent(const OID &obj) : Agent(obj) { registerEvents(); };
+	~XAgent() {};
+		
+	BEGIN_EVENTS(Agent);
+	EVENT(evt_cwd, (*this)("cwd"));
+	EVENT(evt_softagent, (*this)("agents")(cadence::core::All));
+	EVENT(evt_notation, (*this)("notations")(cadence::core::All));
+	EVENT(evt_modules, (*this)("modules")(cadence::core::All));
+	EVENT(evt_cout, (*this)("cout"));
+	EVENT(evt_error, (*this)("error"));
+	EVENT(evt_warning, (*this)("warning"));
+	EVENT(evt_debug, (*this)("debug"));
+	EVENT(evt_info, (*this)("info"));
+	//Notation event
+	END_EVENTS;
+};
+
+void Cadence::makePath(char *buffer, int path, const char *filename) {
 	switch(path) {
 		case PATH_SCRIPTS:	strcpy(buffer, getenv("CADENCE_SCRIPTS")); break;
 		case PATH_MODULES:	strcpy(buffer, getenv("CADENCE_MODULES")); break;
@@ -109,123 +102,121 @@ void cadence::makepath(char *buffer, int path, const char *filename) {
 	strcat(buffer, filename);
 }
 
-namespace cadence {
-	OnEvent(XAgent, evt_cwd) {
-		dstring s((OID)((*this)["cwd"]));
-		char buffer[400];
-		s.toString(buffer,400);
-		chdir(buffer);
-	}
+OnEvent(XAgent, evt_cwd) {
+	dstring s((OID)((*this)["cwd"]));
+	char buffer[400];
+	s.toString(buffer,400);
+	chdir(buffer);
+}
 	
-	OnEvent(XAgent, evt_softagent) {
-		//Make all softagents
-		OID ag = (*this)["agents"];
-		for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
-			(Object*)(ag.get(*i));
-			//std::cout << "Found agent\n";
-		}
+OnEvent(XAgent, evt_softagent) {
+	//Make all softagents
+	OID ag = (*this)["agents"];
+	for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
+		(Object*)(ag.get(*i));
+		//std::cout << "Found agent\n";
 	}
+}
 	
-	OnEvent(XAgent, evt_notation) {
-		//Make all softagents
-		OID ag = (*this)["notations"];
-		for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
-			(Notation*)(ag.get(*i));
-			//std::cout << "Found notation\n";
-		}
+OnEvent(XAgent, evt_notation) {
+	//Make all softagents
+	OID ag = (*this)["notations"];
+	for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
+		(Notation*)(ag.get(*i));
+		//std::cout << "Found notation\n";
 	}
-
-	OnEvent(XAgent, evt_modules) {
-		//Make all softagents
-		OID ag = (*this)["modules"];
-		for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
-			if (*i != This)
-			(Module*)(ag.get(*i));
-			//std::cout << "Found module\n";
-		}
-	}
-
-	OnEvent(XAgent, evt_cout) {
-		//DEPENDENCY(*this, "cout2");
-		//std::cout << (const char*)dstring(get("cout"));
-	}
-
-	OnEvent(XAgent, evt_error) {
-		if (get("error") == Null) return;
-
-		#ifdef LINUX
-		std::cout << "\e[31;1m";
-		#else
-		HANDLE  hConsole;
-		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-		#endif
-
-		std::cout << (const char*)dstring(get("error").get("message")) << "\n";;
-
-		#ifdef LINUX
-		std::cout << "\e[0m";
-		#else
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		#endif
-
-		std::cout.flush();
-	}
-
-	OnEvent(XAgent, evt_warning) {
-		if (get("warning") == Null) return;
-
-		#ifdef LINUX
-		std::cout << "\e[33m";
-		#else
-		HANDLE  hConsole;
-		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		#endif
-
-		std::cout << (const char*)dstring(get("warning").get("message")) << "\n";;
-
-		#ifdef LINUX
-		std::cout << "\e[0m";
-		#else
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		#endif
-
-		std::cout.flush();
-	}
-
-	OnEvent(XAgent, evt_debug) {
-		if (get("debug") == Null) return;
-
-		#ifdef LINUX
-		std::cout << "\e[34;1m";
-		#else
-		HANDLE  hConsole;
-		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
-		#endif
-
-		std::cout << (const char*)dstring(get("debug").get("message")) << "\n";;
-
-		#ifdef LINUX
-		std::cout << "\e[0m";
-		#else
-		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		#endif
-
-		std::cout.flush();
-	}
-
-	OnEvent(XAgent, evt_info) {
-		if (get("info") == Null) return;
-		std::cout << (const char*)dstring(get("info").get("message")) << "\n";;
-		std::cout.flush();
-	}
-	
-	IMPLEMENT_EVENTS(XAgent, Agent);
 }
 
-long long getTicks() {
+OnEvent(XAgent, evt_modules) {
+	//Make all softagents
+	OID ag = (*this)["modules"];
+	for (OID::iterator i=ag.begin(); i!=ag.end(); i++) {
+		if (*i != This)
+		(Module*)(ag.get(*i));
+		//std::cout << "Found module\n";
+	}
+}
+
+OnEvent(XAgent, evt_cout) {
+	//DEPENDENCY(*this, "cout2");
+	//std::cout << (const char*)dstring(get("cout"));
+}
+
+OnEvent(XAgent, evt_error) {
+	if (get("error") == Null) return;
+
+	#ifdef LINUX
+	std::cout << "\e[31;1m";
+	#else
+	HANDLE  hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+	#endif
+
+	std::cout << (const char*)dstring(get("error").get("message")) << "\n";;
+
+	#ifdef LINUX
+	std::cout << "\e[0m";
+	#else
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	#endif
+
+	std::cout.flush();
+}
+
+OnEvent(XAgent, evt_warning) {
+	if (get("warning") == Null) return;
+
+	#ifdef LINUX
+	std::cout << "\e[33m";
+	#else
+	HANDLE  hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	#endif
+
+	std::cout << (const char*)dstring(get("warning").get("message")) << "\n";;
+
+	#ifdef LINUX
+	std::cout << "\e[0m";
+	#else
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	#endif
+
+	std::cout.flush();
+}
+
+OnEvent(XAgent, evt_debug) {
+	if (get("debug") == Null) return;
+
+	#ifdef LINUX
+	std::cout << "\e[34;1m";
+	#else
+	HANDLE  hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	#endif
+
+	std::cout << (const char*)dstring(get("debug").get("message")) << "\n";;
+
+	#ifdef LINUX
+	std::cout << "\e[0m";
+	#else
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	#endif
+
+	std::cout.flush();
+}
+
+OnEvent(XAgent, evt_info) {
+	if (get("info") == Null) return;
+	std::cout << (const char*)dstring(get("info").get("message")) << "\n";;
+	std::cout.flush();
+}
+	
+IMPLEMENT_EVENTS(XAgent, Agent);
+
+long long Cadence::getTicks() {
 	#ifdef LINUX
 	unsigned long long ticks;
 	struct timeval now;
@@ -241,41 +232,16 @@ long long getTicks() {
 	#endif
 }
 
-void cadence::initialise(int argc, char *argv[]) {
-	int n = 1;
-	OID base = OID(1,0,0,0);
-	int ai = 0;
-	int arg_exec[20]; //NOTE: do not hard code.
+void Cadence::initialise() {
+	//int n = 1;
+	//m_base = OID(1,0,0,0);
+	//int ai = 0;
+	//int arg_exec[20]; //NOTE: do not hard code.
 	//int port = 9001;
 	
-	startticks = getTicks();
+	m_startticks = getTicks();
 
-	for (int i=1; i<argc; i++) {
-		if (argv[i][0] == '-') {
-			switch (argv[i][1]) {
-			case 'b':	base = OID(argv[++i]);
-					break;
-			case 'n':	n = atoi(argv[++i]);
-					break;
-			case 'i':	interactive = true;
-					break;
-			case 't':	settime = false;
-					break;
-			case 'd':	cadence::core::debug = atoi(argv[++i]);
-					break;
-			case 'e':	arg_exec[ai++] = ++i;
-					break;
-			case 's':	service = true;
-					break;
-			//case 'p':	port = atoi(argv[++i]);
-			//		break;
-
-			default:	break;
-			}
-		}
-	}
-
-	cadence::core::initialise(base, n);
+	cadence::core::initialise(m_base, m_n);
 	cadence::LocalFile::initialise();
 	
 	new AgentHandler();
@@ -304,124 +270,124 @@ void cadence::initialise(int argc, char *argv[]) {
 	Object::registerType<Module>();
 	new XAgent(root);
 
-	if (ai > 0) {
+	//if (ai > 0) {
 		//DASM dasm(doste::dvm::root);
-		for (int i=0; i<ai; i++) {
-			dasm["execute"] = dstring(argv[arg_exec[i]]);
-			Processor::processAll();
-		}
-	}
+	//	for (int i=0; i<ai; i++) {
+	//		dasm["execute"] = dstring(argv[arg_exec[i]]);
+	//		Processor::processAll();
+	//	}
+	//}
 	
 	#ifdef win32
 	SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
 	#endif
 }
 
-void cadence::finalise() {
-	#ifndef WIN32
-	close(service_sock);
-	#else
-	closesocket(service_sock);
-	#endif
+Cadence::Cadence()
+ : m_base(1,0,0,0),
+   m_n(1),
+   m_interactive(false),
+   m_debug(0),
+   m_settime(true) {
+	m_includeix = 0;
+	m_toinclude = new const char*[MAX_INCLUDES];
+}
+
+Cadence::~Cadence() {
+	//#ifndef WIN32
+	//close(service_sock);
+	//#else
+	//closesocket(service_sock);
+	//#endif
 
 	Object::destroyAll();
 	cadence::core::finalise();
 	
-	if (interactive) {
+	//if (interactive) {
 		//endwin();
-	}
+	//}
 	
 	#ifdef DEBUG
 	DisplayLeaks();
 	#endif
 }
 
-void cadence::update() {
-        ttime = ((double) getTicks() - (double) startticks) / 1000000.0;
-
-	if (settime) root["time"] = ttime;
-
-	ttime_draw += (ttime - ttime_last);
-	dtime = (ttime - ttime_last);
-	ttime_last = ttime;
-
-	Module::updateAll(dtime);
+void Cadence::include(const char *inc) {
+	if (m_includeix == MAX_INCLUDES) return;
+	m_toinclude[m_includeix++] = inc;
 }
 
-#ifdef WIN32
-typedef int socklen_t;
-#endif
-
-void cadence::run(void (*callback)()) {
+void Cadence::run(void (*callback)()) {
 	char *ibuf = NEW char[10000];
 	int pos = 0;
 	int count;
 	OID res;
+
+	initialise();
 	
 	#ifdef LINUX
 	fcntl(0, F_SETFL, O_NONBLOCK);
 	#endif
-	if (interactive) {
+	if (m_interactive) {
 		std::cout << "dasm> ";
 		std::cout.flush();
 	}
 	
 	dasm.set("root", root);
 
+	//For all things to be included...
+	for (int i=0; i<m_includeix; ++i) {
+		core::root["notations"]["dasm"]["run"] = NEW LocalFile(m_toinclude[i]);
+	}
+
 	while (root["running"] == true) {
 		
 		#ifdef LINUX
-		ttime = ((double) getTicks() - (double) startticks) / 1000000.0;
+		m_ttime = ((double) getTicks() - (double) m_startticks) / 1000000.0;
 		#endif
 		#ifdef WIN32
 		LARGE_INTEGER fq;
 		QueryPerformanceFrequency(&fq);
-		ttime = ((double)getTicks() - (double)startticks) / (double)(((unsigned long long)fq.HighPart << 32) + (unsigned long long)fq.LowPart);
+		m_ttime = ((double)getTicks() - (double)m_startticks) / (double)(((unsigned long long)fq.HighPart << 32) + (unsigned long long)fq.LowPart);
 		#endif
 		
-		if (settime) root["time"] = ttime;
-		//root["frametime"] = ttime - ttime_last;
-		//std::cout << "Update FPS: " << 1.0 / (ttime - ttime_last) << "\n";
+		//Put time into graph if requested.
+		if (m_settime) root["time"] = m_ttime;
 
-		ttime_draw += (ttime - ttime_last);
-		dtime = (ttime - ttime_last);
-		ttime_last = ttime;
+		m_ttime_draw += (m_ttime - m_ttime_last);
+		m_dtime = (m_ttime - m_ttime_last);
+		m_ttime_last = m_ttime;
 
 		
-		if (interactive) {
-			/*if (pos == 0) {
-				std::cout << "> ";
-			} else {
-				std::cout << "  ";
-			}
-			std::cout.flush();
-			std::cin.getline(&ibuf[pos],10000);
-			dasm.execute(ibuf, root);
-			pos = 0;*/
-			
-			//count = std::cin.readsome(&ibuf[pos], 10000-pos);
+		if (m_interactive) {
+
+			//Read a console character from stdin.
 			#ifdef LINUX
 			count = read(0, &ibuf[pos], 10000-pos);
 			#else
-			
 			if(_kbhit()) {
 				ReadConsoleA(GetStdHandle(STD_INPUT_HANDLE), &ibuf[pos], 10000-pos, (unsigned long *)&count, 0);
 			} else {
 				count = 0;
 			}
-
 			#endif
+
+			//If a character was read
 			if (count > 0) {
 				pos += count;
 				ibuf[pos] = 0;
 					
+				//If the character was a carrage return
 				if (ibuf[pos-1] == '\n') {
 					//We have reached the end of an input statement
 					pos = 0;
+
+					//Execute the entered statement
 					((DASM*)dasm)->execute(ibuf);
 					DMsg msg(DMsg::INFO);
 					res = dasm.get("result");
-					//res = ((Notation*)(doste::dvm::root.get("notations").get("dasm")))->execute(ibuf,root);
+
+					//Check the type of the result and display it
 					if (!res.isReserved() && res.get(Size) != Null && res.get(0).isChar()) {
 						dstring(res).toString(ibuf,1000);
 						std::cout << "  \"" << ibuf << "\"\n";
@@ -429,13 +395,15 @@ void cadence::run(void (*callback)()) {
 						res.toString(ibuf, 1000);
 						std::cout << "  " << ibuf << "\n";
 					}
+
+					//Display a new prompt on a new line.
 					std::cout << "dasm> ";
 					std::cout.flush();
 				}
 			}
 		}
 
-		Module::updateAll(dtime);
+		Module::updateAll(m_dtime);
 		if (callback) callback();
 	}
 
