@@ -58,6 +58,10 @@ void test_getset(Test &test) {
 	DONE
 }
 
+void test_iterator(Test &test) {
+	DONE
+}
+
 int main(int argc, char *argv[]) {
 	Test test(argc,argv);
 	test.run(Test::TEST_UNIT, test_double);
@@ -68,4 +72,5 @@ int main(int argc, char *argv[]) {
 	Cadence vm;
 	vm.initialise();
 	test.run(Test::TEST_SYSTEM, test_getset);
+	test.run(Test::TEST_SYSTEM, test_iterator);
 }

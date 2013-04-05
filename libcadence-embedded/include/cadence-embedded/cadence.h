@@ -107,6 +107,7 @@ namespace cadence {
 		static Cadence *instance() { return s_instance; }
 
 		void initialise();
+		void finalise();
 
 		private:
 		long long getTicks();

@@ -297,6 +297,12 @@ Cadence::Cadence()
 }
 
 Cadence::~Cadence() {
+	if (s_instance == this) {
+		finalise();
+	}
+}
+
+void Cadence::finalise() {
 	//#ifndef WIN32
 	//close(service_sock);
 	//#else
@@ -313,6 +319,8 @@ Cadence::~Cadence() {
 	#ifdef DEBUG
 	DisplayLeaks();
 	#endif
+
+	s_instance = 0;
 }
 
 void Cadence::include(const char *inc) {

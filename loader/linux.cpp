@@ -64,6 +64,9 @@ int main(int argc, char *argv[]) {
 
 	vm.run(cadence_callback);
 
+	//Explicit cleanup before Qt cleanup.
+	vm.finalise();
+
 	#ifdef QT
 	delete qtapp;
 	#endif
