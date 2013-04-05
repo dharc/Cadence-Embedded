@@ -20,6 +20,7 @@ $(LIB): $(OBJECTS)
 	cd handlers; make
 	cd notations; make
 	cd library; make
+	cd test; make
 	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS) $(DOSTEOBJ)
 
 .cpp.o:
@@ -32,3 +33,4 @@ clean:
 	cd notations; make clean
 	cd handlers; make clean
 	cd library; make clean
+	cd test; make clean

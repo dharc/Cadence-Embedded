@@ -66,6 +66,8 @@ cadence::List<Object*> Object::s_list;
 
 OID dasm;
 
+Cadence *Cadence::s_instance = 0;
+
 //DUMMY Used by configure scripts.
 extern "C" {
 int cadence_check(int v) {
@@ -291,6 +293,7 @@ Cadence::Cadence()
    m_settime(true) {
 	m_includeix = 0;
 	m_toinclude = new const char*[MAX_INCLUDES];
+	s_instance = this;
 }
 
 Cadence::~Cadence() {

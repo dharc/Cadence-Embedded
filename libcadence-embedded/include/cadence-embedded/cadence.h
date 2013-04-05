@@ -87,6 +87,8 @@ namespace cadence {
 
 		bool isInteractive() { return m_interactive; }
 
+		double getTime() { return m_ttime; }
+
 		void include(const char*);
 
 		/**
@@ -102,8 +104,11 @@ namespace cadence {
 		static const int PATH_SCRIPTS = 1;
 		static const int PATH_MODULES = 2;
 
-		private:
+		static Cadence *instance() { return s_instance; }
+
 		void initialise();
+
+		private:
 		long long getTicks();
 
 		core::OID m_base;
@@ -118,6 +123,7 @@ namespace cadence {
 		double m_ttime_draw;
 		const char **m_toinclude;
 		int m_includeix;
+		static Cadence *s_instance;
 
 		static const unsigned int MAX_INCLUDES = 20;
 	};	

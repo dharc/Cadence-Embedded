@@ -6,6 +6,7 @@ cadence::
 	cd libcadence-embedded; make
 	cd loader; make
 	cd modules; make
+	cd tests; make
 
 install:: cadence
 	cd ./libcadence-embedded; make install
@@ -18,3 +19,4 @@ clean::
 	cd libcadence-embedded; make clean
 	cd loader; make clean
 	cd modules; make clean
+	cd tests; make clean

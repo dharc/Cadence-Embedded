@@ -48,6 +48,8 @@ LocalFile::~LocalFile() {
 void LocalFile::initialise() {
 	char *paths = getenv("CADENCE_PATH");
 	char *temp;
+
+	if (paths == 0) return;
 	
 	//Now need to split paths into an array of individual paths.
 	for (int i=0; i<19; i++) {
