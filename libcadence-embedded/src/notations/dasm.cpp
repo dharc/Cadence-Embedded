@@ -163,7 +163,13 @@ bool DASM::parseObject(OID &cur) {
 	else if (parse(Char<1>('-'))) cur = Subtract;
 	else if (parse(Char<1>('/'))) cur = Divide;
 	else if (parse(Char<1>('+'))) cur = Add;
-	else if (parse(Char<1>('>'))) cur = Greater;
+	else if (parse(Char<1>('>'))) {
+		if (parse(Char<1>('>'))) {
+			cur = Shiftright;
+		} else {
+			cur = Greater;
+		}
+	}
 	//else if (parse(Char<1>('>'))) cur = Greater;
 	else if (parse(Char<1>('|'))) cur = Or;
 	else if (parse(Char<1>('&'))) cur = And;
@@ -206,6 +212,8 @@ bool DASM::parseObject(OID &cur) {
 			parseValue(integer);
 			cur.m_d = (unsigned int)integer.value;
 			parse(Char<1>('>'));
+		} else if (parse(Char<1>('<'))) {
+			cur = Shiftleft;
 		} else {
 			cur = Less;
 		}

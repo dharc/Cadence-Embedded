@@ -88,8 +88,6 @@ bool NumOp::handle(Event &evt) {
 }
 
 OID Xor;
-OID Shiftleft;
-OID Shiftright;
 OID Trunc;
 OID Lower;
 OID Upper;
@@ -99,8 +97,6 @@ OID Round;
 Number::Number()
  : Handler(OID(0,1,0,0), OID(0,2,0xFFFFFFFF,0xFFFFFFFF)) {
 	Xor = OID("xor");
-	Shiftleft = OID("shiftleft");
-	Shiftright = OID("shiftright");
 	Lower = OID("lower");
 	Upper = OID("upper");
 	Round = OID("round");

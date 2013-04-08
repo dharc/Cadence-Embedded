@@ -661,6 +661,8 @@ namespace cadence {
 		static const OID Percent = OID(0,0,0,24);
 		static const OID At = OID(0,0,0,25);
 		static const OID Exclamation = OID(0,0,0,26);
+		static const OID Shiftleft = OID(0,0,0,27);
+		static const OID Shiftright = OID(0,0,0,28);
 
 		static const OID _delete = OID (0,0,0,100);
 		static const OID _size = OID(0,0,0,101);
