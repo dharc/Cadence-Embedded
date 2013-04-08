@@ -153,10 +153,10 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 				if (res == modifiers::BeginSub) res = parseExpression(ctx,def,index, fdef);
 				break;
 	
-			case modifiers::NODEP:
+			//case modifiers::NODEP:
 				//Toggle the nodep to add or not add dependencies automatically
-				nodep = !nodep;
-				break;
+			//	nodep = !nodep;
+			//	break;
 	
 			case modifiers::COMPARE:
 				//Compare the current object with the next and put boolean
@@ -197,6 +197,8 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 
 	delete evt;
 
+	//Make sure result OID is not special...
+	//if it is then substitute it.
 	if (res == This) res = ctx->object();
 	else if (res == Key) res = ctx->key();
 	return res;
@@ -209,6 +211,7 @@ OID Definition::evaluate(const OID &obj, const OID &key, bool fdef) {
 	cproc = Processor::getThisProcessor();
 	Context *context, *oldctx;
 
+	//Save old context and make a new one
 	oldctx = cproc->context();
 	context = NEW Context(*this, obj, key);
 	cproc->context(context);
@@ -217,6 +220,7 @@ OID Definition::evaluate(const OID &obj, const OID &key, bool fdef) {
 	//OID sobject;
 	//bool restore_context = false;
 
+	//Get the definition into a buffer object
 	Event *evt2 = NEW Event(Event::GET_RANGE, m_def);
 	evt2->param<0>(0);
 	evt2->param<1>(m_size);
@@ -244,6 +248,7 @@ OID Definition::evaluate(const OID &obj, const OID &key, bool fdef) {
 	//	res = def->get(++i);
 	//}
 
+	//Actually evaluate the definition using the buffer.
 	res = parseExpression(context, def, i, fdef);
 
 	
@@ -252,9 +257,11 @@ OID Definition::evaluate(const OID &obj, const OID &key, bool fdef) {
 	//	context->selfKey(skey);
 	//}
 
+	//Restore previous context;
 	cproc->context(oldctx);
 	delete context;
 
+	//Free the definition buffer.
 	Buffer::free(boid);
 
 	return res;

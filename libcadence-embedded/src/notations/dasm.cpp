@@ -137,11 +137,15 @@ bool DASM::parseString(OID &cur) {
 
 bool DASM::parseObject(OID &cur) {
 	Integer<10> integer;
+	Integer<16> hex;
 	Float real;
 	AlphaNumericX alpha;
 	
 	if (parseValue(real)) cur = real.value;
-	else if (parseValue(integer)) cur = integer.value;
+	else if (parse(Char<2>("0x"))) {
+			if (parseValue(hex)) cur = hex.value;
+			else error("Invalid hex number");
+	} else if (parseValue(integer)) cur = integer.value;
 	else if (parse(Char<1>('\''))) {
 		//Now parse next char
 		char c;

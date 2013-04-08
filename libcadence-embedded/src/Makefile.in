@@ -7,30 +7,23 @@ CPPFLAGS=@CXXFLAGS@
 LDFLAGS=@LDFLAGS@
 INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
 
-SOURCES=memory.cpp cadence.cpp messages.cpp
+SOURCES=memory.cpp cadence.cpp messages.cpp core/buffer.cpp core/context.cpp core/definition.cpp core/core.cpp core/event.cpp core/handler.cpp core/names.cpp core/oid.cpp core/processor.cpp notations/dasm.cpp agents/module.cpp agents/notation.cpp agents/softagent.cpp handlers/agenthandler.cpp handlers/directory.cpp handlers/local.cpp handlers/number.cpp library/dmsg.cpp library/dstring.cpp library/file.cpp library/stream.cpp test/test.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 LIB=libcadence-embedded.so
-DOSTEOBJ=./core/libcadencecore.a ./notations/libcadencenotations.a ./handlers/libcadencehandlers.a ./agents/libcadenceagents.a ./library/libcadencelib.a
 
 all: $(SOURCES) $(LIB)
 
 $(LIB): $(OBJECTS)
-	cd core; make
-	cd agents; make
-	cd handlers; make
-	cd notations; make
-	cd library; make
-	cd test; make
-	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS) $(DOSTEOBJ)
+	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS)
 
 .cpp.o:
 	$(CPP) -fPIC -c $(CPPFLAGS) $(INCLUDES) $< -o $@
 
 clean:
 	rm -f *.o
-	cd core; make clean
-	cd agents; make clean
-	cd notations; make clean
-	cd handlers; make clean
-	cd library; make clean
-	cd test; make clean
+	rm -f core/*.o
+	rm -f agents/*.o
+	rm -f test/*.o
+	rm -f handlers/*.o
+	rm -f library/*.o
+	rm -f notations/*.o
