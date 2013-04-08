@@ -62,14 +62,21 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	else if (res == modifiers::BeginSub) res = parseExpression(ctx,def,index, fdef);
 
 	while (index < m_size) {
+		//Get the next component of the definition
 		temp = def->get(index);
 
+		//If it is the special This OID then replace with current context object
 		if (res == This) res = ctx->object();
+		//or if it is the Key OID then replace with the key.
 		else if (res == Key) res = ctx->key();
 
+		//Start of a bracket for a nested definition...
+		//process nested definition using a recursive call to this function
 		if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,++index, fdef);
 
+		//If the element is a special modifier OID then
 		if (temp.isModifier()) {
+			//Get the type of modifier
 			modi = temp.d();
 		
 			switch (modi) {
@@ -80,11 +87,11 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 				delete evt;
 				return res;
 	
-			/*case modifiers::SET:
+			case modifiers::SET:
 				temp = def->get(++index);
-				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index);
+				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index,fdef);
 				temp2 = def->get(++index);
-				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index);
+				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index,fdef);
 				evt2 = NEW Event(Event::SET, res);
 				evt2->param<0>(temp);		//Get key from definition
 				evt2->param<1>(temp2);		//Get value from definition
@@ -93,9 +100,9 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	
 			case modifiers::DEFINE:
 				temp = def->get(++index);
-				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index);
+				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index,fdef);
 				temp2 = def->get(++index);
-				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index);
+				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index,fdef);
 				evt2 = NEW Event(Event::DEFINE, res);
 				evt2->param<0>(temp);		//Get key from definition
 				evt2->param<1>(temp2);		//Get definition object from definition
@@ -105,18 +112,18 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	
 			case modifiers::DEFINEFUNC:
 				temp = def->get(++index);
-				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index);
+				if (temp == modifiers::BeginSub) temp = parseExpression(ctx,def,index,fdef);
 				temp2 = def->get(++index);
-				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index);
+				if (temp2 == modifiers::BeginSub) temp2 = parseExpression(ctx,def,index,fdef);
 				evt2 = NEW Event(Event::DEFINE_FUNC, res);
 				evt2->param<0>(temp);		//Get key from definition
 				evt2->param<1>(temp2);		//Get function definition from definition
 				evt2->send(Event::FLAG_FREE);
-				break;*/
+				break;
 	
-			//case modifiers::CREATE:	
-			//	res = OID::create();
-			//	break;
+			case modifiers::CREATE:	
+				res = OID::create();
+				break;
 	
 			case modifiers::UNION:
 				temp = def->get(++index);
@@ -146,10 +153,10 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 				if (res == modifiers::BeginSub) res = parseExpression(ctx,def,index, fdef);
 				break;
 	
-			/*case modifiers::NODEP:
+			case modifiers::NODEP:
 				//Toggle the nodep to add or not add dependencies automatically
 				nodep = !nodep;
-				break;*/
+				break;
 	
 			case modifiers::COMPARE:
 				//Compare the current object with the next and put boolean
@@ -161,7 +168,9 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	
 			default: break;
 			}
+		//Otherwise it is a normal OID so use to navigate path
 		} else {
+			//Generate a GET event.
 			evt->type(Event::GET);
 			evt->dest(res);
 			evt->param<0>(temp);
@@ -170,6 +179,7 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	
 			//Should a dependency be added.
 			if (!nodep) {
+				//Yes so generate appropriate dependency event
 				if (!fdef)
 					evt2 = NEW Event(Event::ADDDEP, evt->dest());
 				else
