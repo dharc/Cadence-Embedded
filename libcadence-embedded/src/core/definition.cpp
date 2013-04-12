@@ -155,8 +155,8 @@ OID Definition::parseExpression(Context *ctx, Buffer *def, int &index, bool fdef
 	
 			//case modifiers::NODEP:
 				//Toggle the nodep to add or not add dependencies automatically
-			//	nodep = !nodep;
-			//	break;
+				//nodep = !nodep;
+				//break;
 	
 			case modifiers::COMPARE:
 				//Compare the current object with the next and put boolean

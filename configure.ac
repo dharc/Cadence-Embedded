@@ -328,7 +328,7 @@ TEMP_QTLIB_ACT="-lQtGui -lQtCore"
 if test "$target_cpu" == "x86_64"; then
 	CXXFLAGS="$CXXFLAGS -DX86_64"
 	LDFLAGS="$LDFLAGS -L/usr/X11R6/lib64"
-	MODULES="ui basic_agents"
+	MODULES="ui basic_agents xnet"
 elif test "$target_cpu" == "arm"; then
 	TEMP_QTMOC="/opt/CANvu-VM/Toolchain/QtIMX28/moc"
         TEMP_QTINCLUDES="-I/opt/CANvu-VM/SysRoots/IMX28/usr/include -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/Qt -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtCore -I/opt/CANvu-VM/SysRoots/IMX28/usr/include/QtGui"
@@ -337,11 +337,11 @@ elif test "$target_cpu" == "arm"; then
 	LDFLAGS="$LDFLAGS -Wl,-rpath,/opt/CANvu-VM/SysRoots/IMX28/usr/lib"
 	CXXFLAGS="$CXXFLAGS -DARM -marm --sysroot=$SYSROOT -mabi=aapcs-linux -mno-thumb-interwork -march=armv5te -Wno-psabi"
 	CXX="/opt/CANvu-VM/Toolchain/arm-2012.03/bin/arm-none-linux-gnueabi-g++"
-	MODULES="basic_agents"
+	MODULES="basic_agents xnet"
 else
 	CXXFLAGS="$CXXFLAGS -march=pentium3 -mfpmath=sse"
 	LDFLAGS="$LDFLAGS -L/usr/X11R6/lib"
-	MODULES="ui basic_agents"
+	MODULES="ui basic_agents xnet"
 fi
 
 

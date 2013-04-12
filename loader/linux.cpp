@@ -15,15 +15,28 @@ Cadence vm;
 QApplication *qtapp=0;
 int myargc = 0;
 char *myargv[] = { "", "-qws" };
+double qtlastpoll = 0.0;
+
+//40 fps
+static const double QT_POLL_INTERVAL = 0.025;
+
 #endif
 
 void cadence_callback() {
 	#ifdef QT
-	if (vm.isInteractive()) {
+	//if (vm.isInteractive()) {
+
+	//Limit Qt to 40fps.
+	if (vm.getTime() - qtlastpoll > QT_POLL_INTERVAL)
+	{
 		if (qtapp) qtapp->processEvents();
-	} else {
-		if (qtapp) qtapp->processEvents(QEventLoop::WaitForMoreEvents);
+		qtlastpoll = vm.getTime();
 	}
+
+
+	//} else {
+	//	if (qtapp) qtapp->processEvents(QEventLoop::WaitForMoreEvents);
+	//}
 	#endif
 }
 
