@@ -1,0 +1,42 @@
+#!/usr/bin/ruby
+
+puts "================================================================================"
+puts "  Cadence-VM Test Harness"
+puts "================================================================================"
+puts
+
+failcount = 0
+
+tests = Dir.entries(".").sort!
+tests.each { |x|
+	if x != "." && x != ".." && x != "run"
+		file = "./#{x}"
+
+		if File.executable?(file)
+			status = 1
+			begin
+				result = %x(./#{x} --pretty)
+				print result
+			rescue
+				puts "TEST PROGRAM \"#{x}\" FAILED"
+			else
+				status = $?.exitstatus
+				if status != 0
+					failcount = failcount + 1
+				end
+			end
+		end
+	end
+}
+
+if failcount > 0
+	puts
+	puts "Failed tests = #{failcount}"
+else
+	puts
+	puts "All tests passed."
+end
+
+puts
+puts "================================================================================"
+
