@@ -13,7 +13,7 @@
 
 .modules ui = (new type=Module
 	file = (new type=LocalFile
-		filename = "libcadence-embedded_ui.so"
+		filename = "libcadence-vm_ui.so"
 	)
 	base = (.)
 	update = true

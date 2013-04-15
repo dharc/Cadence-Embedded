@@ -5,13 +5,13 @@ MOC=@QTMOC@
 CPP=@CXX@
 CPPFLAGS=@CXXFLAGS@ @QTINCLUDES@
 LDFLAGS=@LDFLAGS@ @QTLIBS@
-INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
+INCLUDES=-I@top_srcdir@/libcadence-vm/include -I@top_builddir@/libcadence-vm/include
 
 SOURCES=browser.cpp inputwindow.cpp mainwindow.cpp syntax.cpp ui.cpp msghandler.cpp modules.cpp history.cpp observableviewer.cpp
 HEADERS=browser.h inputwindow.h mainwindow.h msghandler.h modules.h history.h observableviewer.h
 MOCSOURCES=$(HEADERS:.h=_moc.cpp)
 OBJECTS=$(SOURCES:.cpp=.o) $(MOCSOURCES:.cpp=.o)
-LIB=libcadence-embedded_ui.so
+LIB=libcadence-vm_ui.so
 
 all: $(SOURCES) $(LIB)
 

@@ -1,5 +1,5 @@
 SHELL=/bin/sh
-MODULE_PATH=@prefix@/share/cadence-embedded/modules/
+MODULE_PATH=@prefix@/share/cadence-vm/modules/
 MODULES=@MODULES@
 
 default::

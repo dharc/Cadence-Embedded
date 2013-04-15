@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export LD_LIBRARY_PATH="@prefix@/lib:@prefix@/share/cadence-vm/modules"
+export CADENCE_SCRIPTS="@prefix@/share/cadence-vm/scripts"
+export CADENCE_PATH=".:@prefix@/share/cadence-vm/scripts:@prefix@/share/cadence-vm/projects:@prefix@/share/cadence-vm"
+export CADENCE_MODULES="@prefix@/share/cadence-vm/modules"
+@prefix@/bin/cadenced.bin $*

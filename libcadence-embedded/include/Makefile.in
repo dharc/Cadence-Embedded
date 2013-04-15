@@ -1,2 +1,0 @@
-install::
-	cd cadence-embedded; make install

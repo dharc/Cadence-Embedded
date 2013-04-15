@@ -1,5 +1,5 @@
 SHELL=/bin/sh
-SCRIPT_PATH=@prefix@/share/cadence-embedded/scripts/xnet
+SCRIPT_PATH=@prefix@/share/cadence-vm/scripts/xnet
 
 SCRIPTS=xnet.dasm
 

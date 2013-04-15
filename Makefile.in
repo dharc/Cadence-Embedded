@@ -3,20 +3,20 @@ SHELL=/bin/sh
 default:: cadence
 
 cadence::
-	cd libcadence-embedded; make
-	cd loader; make
+	cd libcadence-vm; make
+	cd cadenced; make
 	cd modules; make
 	cd tests; make
 
 install:: cadence
-	cd ./libcadence-embedded; make install
+	cd ./libcadence-vm; make install
 	cd ./modules; make install
 	#cd ./models; make install
-	cd ./loader; make install
+	cd ./cadenced; make install
 
 
 clean::
-	cd libcadence-embedded; make clean
-	cd loader; make clean
+	cd libcadence-vm; make clean
+	cd cadenced; make clean
 	cd modules; make clean
 	cd tests; make clean

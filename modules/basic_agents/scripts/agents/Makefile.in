@@ -1,5 +1,5 @@
 SHELL=/bin/sh
-SCRIPT_PATH=@prefix@/share/cadence-embedded/scripts/agents
+SCRIPT_PATH=@prefix@/share/cadence-vm/scripts/agents
 
 SCRIPTS=basic.dasm
 

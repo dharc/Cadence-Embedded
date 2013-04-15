@@ -8,8 +8,8 @@
 #####################################################################
 
 #AC_PREREQ(2.59)
-AC_INIT(Cadence, 1.1)
-AC_CONFIG_SRCDIR(loader/linux.cpp)
+AC_INIT(CadenceVM, 0.02)
+AC_CONFIG_SRCDIR(cadenced/linux.cpp)
 AC_CANONICAL_TARGET
 AC_CONFIG_HEADER(config.h)
 
@@ -385,6 +385,6 @@ AC_SUBST(QTINCLUDES)
 AC_SUBST(QTLIB_ACT)
 AC_SUBST(MODULES)
 
-AC_OUTPUT(Makefile libcadence-embedded/Makefile libcadence-embedded/include/Makefile libcadence-embedded/include/cadence-embedded/Makefile libcadence-embedded/include/cadence-embedded/core/Makefile libcadence-embedded/src/Makefile libcadence-embedded/scripts/Makefile loader/Makefile loader/cadence-embed modules/Makefile modules/module.mk modules/module-src.mk modules/module-scripts.mk modules/module-data.mk modules/module-scripts-sub.mk modules/module-data-sub.mk modules/ui/Makefile modules/ui/src/Makefile modules/ui/data/Makefile modules/ui/data/ui/Makefile modules/ui/scripts/Makefile modules/ui/scripts/ui/Makefile modules/xnet/Makefile modules/xnet/src/Makefile modules/xnet/scripts/Makefile modules/xnet/scripts/xnet/Makefile modules/basic_agents/Makefile modules/basic_agents/src/Makefile modules/basic_agents/scripts/Makefile modules/basic_agents/scripts/agents/Makefile tests/Makefile )
+AC_OUTPUT(Makefile libcadence-vm/Makefile libcadence-vm/include/Makefile libcadence-vm/include/cadence-vm/Makefile libcadence-vm/include/cadence-vm/core/Makefile libcadence-vm/src/Makefile libcadence-vm/scripts/Makefile cadenced/Makefile cadenced/cadenced modules/Makefile modules/module.mk modules/module-src.mk modules/module-scripts.mk modules/module-data.mk modules/module-scripts-sub.mk modules/module-data-sub.mk modules/ui/Makefile modules/ui/src/Makefile modules/ui/data/Makefile modules/ui/data/ui/Makefile modules/ui/scripts/Makefile modules/ui/scripts/ui/Makefile modules/xnet/Makefile modules/xnet/src/Makefile modules/xnet/scripts/Makefile modules/xnet/scripts/xnet/Makefile modules/basic_agents/Makefile modules/basic_agents/src/Makefile modules/basic_agents/scripts/Makefile modules/basic_agents/scripts/agents/Makefile tests/Makefile )
 
 ####################

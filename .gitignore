@@ -6,8 +6,8 @@ config.h
 config.log
 *.so
 autom4te.cache
-cadence-canvu
-cadence-canvu.bin
+cadenced
+cadenced.bin
 *.a
 *.mk
 *~

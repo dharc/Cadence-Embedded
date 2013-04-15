@@ -1,9 +1,0 @@
-SHELL=/bin/sh
-HEADER_PATH=@prefix@/include/cadence-embedded
-
-HEADERS=agent.h agenthandler.h cadence.h dasm.h directory.h dll.h dmsg.h dstring.h file.h list.h map.h memory.h messages.h notation.h object.h stream.h token.h vector.h
-
-install::
-	install -d "$(HEADER_PATH)"
-	install $(HEADERS) "$(HEADER_PATH)"
-	cd core; make install

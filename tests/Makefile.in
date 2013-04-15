@@ -5,7 +5,7 @@ AR=ar
 CPP=@CXX@
 CPPFLAGS=@CXXFLAGS@ @QTINCLUDES@
 LDFLAGS=@LDFLAGS@ @QTLIBS@
-INCLUDES=-I@top_srcdir@/libcadence-embedded/include -I@top_builddir@/libcadence-embedded/include
+INCLUDES=-I@top_srcdir@/libcadence-vm/include -I@top_builddir@/libcadence-vm/include
 BIN_PATH=@prefix@/bin
 
 SOURCES_OID=oid-test.cpp
@@ -15,7 +15,7 @@ EXECUTABLE_OID=oid-test
 all: $(SOURCES_OID) $(EXECUTABLE_OID)
 
 $(EXECUTABLE_OID): $(OBJECTS_OID)
-	$(CPP) $(LDFLAGS) -L../libcadence-embedded -o ./$@ $(OBJECTS_OID) -lcadence-embedded -ldl -lpthread @QTLIB_ACT@
+	$(CPP) $(LDFLAGS) -L../libcadence-vm -o ./$@ $(OBJECTS_OID) -lcadence-vm -ldl -lpthread @QTLIB_ACT@
 
 .cpp.o:
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES) $< -o $@

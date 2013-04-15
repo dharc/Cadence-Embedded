@@ -1,0 +1,29 @@
+SHELL=/bin/sh
+
+CC=@CC@
+CPP=@CXX@
+AR=ar
+CPPFLAGS=@CXXFLAGS@
+LDFLAGS=@LDFLAGS@
+INCLUDES=-I@top_srcdir@/libcadence-vm/include -I@top_builddir@/libcadence-vm/include
+
+SOURCES=memory.cpp cadence.cpp messages.cpp core/buffer.cpp core/context.cpp core/definition.cpp core/core.cpp core/event.cpp core/handler.cpp core/names.cpp core/oid.cpp core/processor.cpp notations/dasm.cpp agents/module.cpp agents/notation.cpp agents/softagent.cpp handlers/agenthandler.cpp handlers/directory.cpp handlers/local.cpp handlers/number.cpp library/dmsg.cpp library/dstring.cpp library/file.cpp library/stream.cpp test/test.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+LIB=libcadence-vm.so
+
+all: $(SOURCES) $(LIB)
+
+$(LIB): $(OBJECTS)
+	$(CPP) --shared $(LDFLAGS) -o ../$@ $(OBJECTS)
+
+.cpp.o:
+	$(CPP) -fPIC -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+clean:
+	rm -f *.o
+	rm -f core/*.o
+	rm -f agents/*.o
+	rm -f test/*.o
+	rm -f handlers/*.o
+	rm -f library/*.o
+	rm -f notations/*.o

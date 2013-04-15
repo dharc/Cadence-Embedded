@@ -1,6 +1,6 @@
 .modules basic_agents = (new type=Module
 	file = (new type=LocalFile
-		filename = "libcadence-embedded_basic_agents.so"
+		filename = "libcadence-vm_basic_agents.so"
 	)
 	base = (.)
 	update = false

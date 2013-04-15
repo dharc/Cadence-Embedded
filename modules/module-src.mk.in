@@ -4,10 +4,10 @@ CC=@CC@
 CPP=@CXX@
 CPPFLAGS+= @CXXFLAGS@
 LDFLAGS+= @LDFLAGS@
-INCLUDES+= -I@top_srcdir@/../../libcadence-embedded/include -I@top_builddir@/../../libcadence-embedded/include
+INCLUDES+= -I@top_srcdir@/../../libcadence-vm/include -I@top_builddir@/../../libcadence-vm/include
 
 OBJECTS=$(SOURCES:.cpp=.o)
-LIB=libcadence-embedded_$(MODULE_NAME).so
+LIB=libcadence-vm_$(MODULE_NAME).so
 
 all: $(SOURCES) $(LIB)
 

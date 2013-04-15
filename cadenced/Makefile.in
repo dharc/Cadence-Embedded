@@ -1,0 +1,29 @@
+SHELL=/bin/sh
+
+CC=@CC@
+AR=ar
+CPP=@CXX@
+CPPFLAGS=@CXXFLAGS@ @QTINCLUDES@
+LDFLAGS=@LDFLAGS@ @QTLIBS@
+INCLUDES=-I@top_srcdir@/libcadence-vm/include -I@top_builddir@/libcadence-vm/include
+BIN_PATH=@prefix@/bin
+
+SOURCES=linux.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=cadenced.bin
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CPP) $(LDFLAGS) -L../libcadence-vm -o ./$@ $(OBJECTS) -lcadence-vm -ldl -lpthread @QTLIB_ACT@
+
+.cpp.o:
+	$(CPP) -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+install:
+	install -d "$(BIN_PATH)"
+	install -m 755 cadenced.bin "$(BIN_PATH)"
+	install -m 755 cadenced "$(BIN_PATH)"
+
+clean:
+	rm *.o

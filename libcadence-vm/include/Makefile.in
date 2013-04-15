@@ -1,0 +1,2 @@
+install::
+	cd cadence-vm; make install

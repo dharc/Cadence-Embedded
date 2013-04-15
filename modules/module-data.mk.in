@@ -1,5 +1,5 @@
 SHELL=/bin/sh
-DATA_PATH=@prefix@/share/cadence-embedded/data
+DATA_PATH=@prefix@/share/cadence-vm/data
 
 install::
 	install -d "$(DATA_PATH)"
