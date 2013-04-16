@@ -1,9 +1,9 @@
 //Create relevant structures to initialise the system
 //Nicolas Pope
 
-.os = linux;
-.modules = (new);
-@dasm = (. notations dasm);
+this.os = linux;
+this.modules = (new);
+@dasm = (this.notations.dasm);
 
 //Load OS independent scripts
 %include "common.dasm"

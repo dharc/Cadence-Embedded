@@ -314,7 +314,11 @@ void Definition::toString(char *buf, int max, int indent) const {
 			}
 		} else {
 			if (temp == This) {
-				strcat(buf, ".");
+				if (def->get(index).isName()) {
+					strcat(buf, "this.");
+				} else {
+					strcat(buf, "this ");
+				}
 			} else if (index == 1 && temp.get("type") == OID("if")) {
 				ifobj = temp;
 				strcat(buf, "if ");

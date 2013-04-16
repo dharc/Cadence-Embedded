@@ -1,7 +1,7 @@
 //Shortcut variables.
-@math = (.math);
-@root = (.);
-.id = root;
+@math = (this.math);
+@root = (this);
+this.id = root;
 
 //A wrapper to allow math random to be used normally
 @math random is { @root _random void };
@@ -9,9 +9,9 @@
 //Boolean operators
 %include "boolean.dasm";
 
-.lasttime = 0.0;
-.lasttime := { .time };
-.itime is { .time - (.lasttime) + 0.0001 };
+this.lasttime = 0.0;
+this.lasttime := { this.time };
+this.itime is { this.time - (this.lasttime) + 0.0001 };
 
-.prototypes = (new id=Prototypes);
-@prototypes = (.prototypes);
+this.prototypes = (new id=Prototypes);
+@prototypes = (this.prototypes);
