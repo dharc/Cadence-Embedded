@@ -1,7 +1,7 @@
-#include <cadence-embedded/cadence.h>
-#include <cadence-embedded/file.h>
-#include <cadence-embedded/core/type_traits.h>
-#include <cadence-embedded/memory.h>
+#include <cadence-vm/cadence.h>
+#include <cadence-vm/file.h>
+#include <cadence-vm/core/type_traits.h>
+#include <cadence-vm/memory.h>
 
 #ifdef QT
 #include <QtGui>
