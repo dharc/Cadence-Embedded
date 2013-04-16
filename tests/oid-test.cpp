@@ -1,6 +1,6 @@
-#include <cadence-embedded/core/oid.h>
-#include <cadence-embedded/test/test.h>
-#include <cadence-embedded/cadence.h>
+#include <cadence-vm/core/oid.h>
+#include <cadence-vm/test/test.h>
+#include <cadence-vm/cadence.h>
 #include <string.h>
 
 using namespace cadence;
