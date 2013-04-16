@@ -192,7 +192,7 @@ bool DASM::parseObject(OID &cur) {
 		}
 	}
 	//else if (parse(Keyword(".."))) cur = Parent;
-	else if (parse(Char<1>('.'))) cur = This;
+	//else if (parse(Char<1>('.'))) cur = This; REMOVED
 	//else if (parse(Keyword("new"))) {
 	//	OID temp = OID::create();
 	//	temp.set(This, cur);
@@ -454,6 +454,7 @@ bool DASM::parseDefinition(OID &context, OID &cur, int &i, bool real, bool ncont
 			return true;
 		}
 		m_lines += ws.count;
+
 		//while (parse(Block<>('#','\n'))) {
 		while (parse(MultiBlock("//","\n"))) {
 			parseValue(ws);
@@ -465,6 +466,9 @@ bool DASM::parseDefinition(OID &context, OID &cur, int &i, bool real, bool ncont
 			}
 			m_lines += ws.count+1;
 		};
+
+		//Ignore a dot if there is one.
+		parse(Char<1>('.'));
 		
 		if (parse(Keyword("if"))) {
 			if (!parseIf(context, i, cur)) return false;
@@ -528,6 +532,25 @@ bool DASM::parseDefinition(OID &context, OID &cur, int &i, bool real, bool ncont
 			//}
 		//} else if (real && parse(Char<1>(')'))) {
 		//	cur.set(i++, modifiers::EndSub); */
+		} else if (parse(Char<1>('['))) {
+			if (real) {
+				//if (!parseDefinition(cur, i, true, true)) return false;
+				//cur.function(i++, value);
+				cur.set(i++, modifiers::BeginSub);
+				if (!parseDefinition(context, cur,i,true)) return false;
+				if (!parse(Char<1>(']'))) {
+					error("Missing ]");
+					return false;
+				}
+				cur.set(i++, modifiers::EndSub);
+			} else {
+				if (!parseSubExpr(value)) return false;
+				cur.set(i++, value);
+				if (!parse(Char<1>(']'))) {
+					error("Missing ]");
+					return false;
+				}
+			}
 		} else if (parse(Char<1>(')')) || parse(Char<1>(']')) || parse(Char<1>('}'))) {
 			//cur = cur.get(key);
 			//cur.set(i++,key);
@@ -660,6 +683,10 @@ bool DASM::parseSubExpr(OID &cur) {
 	//Now read more until something special is encountered.
 	while (!stream->eof()) {
 		parseValue(ws); m_lines += ws.count;
+
+		//Ignore a dot if there is one.
+		parse(Char<1>('.'));
+
 		//while (parse(Block<>('#','\n'))) { parseValue(ws); m_lines += ws.count+1; };
 		while (parse(MultiBlock("//","\n"))) { parseValue(ws); m_lines += ws.count+1; };
 		
@@ -728,6 +755,25 @@ bool DASM::parseSubExpr(OID &cur) {
 			}
 			if (!parse(Char<1>(')'))) {
 				error("Missing )");
+				return false;
+			}
+		//Add support for [ as an alternative to (
+		} else if (parse(Char<1>('['))) {
+			if (!parseSubExpr(value)) return false;
+			if (!first && (lop == 1)) {
+				cur = cur.get(key);
+			} else {
+				first = false;
+			}
+			lop = 1;
+			key = value;
+
+			if (deep) {
+				cur.flags(key, OID::FLAG_DEEP);
+				deep = false;
+			}
+			if (!parse(Char<1>(']'))) {
+				error("Missing ]");
 				return false;
 			}
 		} else if (parse(Keyword("union"))) {
@@ -874,6 +920,13 @@ bool DASM::parseSubExpr(OID &cur) {
 					error("Missing )");
 					return false;
 				}
+			//Add support for [ as an alternative to (
+			} else if (parse(Char<1>('['))) {
+				if (!parseSubExpr(cur)) return false;
+				if (!parse(Char<1>(']'))) {
+					error("Missing ]");
+					return false;
+				}
 			} else if (parse(Keyword("if"))) {
 				if (!parseIf(cur, i, cur, true)) return false;
 			} else if (parse(Keyword("select"))) {
@@ -887,7 +940,7 @@ bool DASM::parseSubExpr(OID &cur) {
 			}
 			if (cur == This) cur = get("root"); //cadence::doste::root;
 			if (cur == modifiers::Create) cur = OID::create();
-		} else if (parse(Char<1>(')'))) {
+		} else if (parse(Char<1>(')')) || parse(Char<1>(']'))) {
 			if (lop == 1) cur = cur.get(key);
 			stream->seek(-1,Stream::CUR);
 			return true;

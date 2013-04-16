@@ -24,10 +24,12 @@
  */
 
 #include <cadence-vm/test/test.h>
+#include <cadence-vm/cadence.h>
 #include <iostream>
 #include <string.h>
 
 using namespace cadence;
+using namespace std;
 
 cadence::Test::Test(int argc, char *argv[]) {
 	m_pretty = false;
@@ -38,9 +40,9 @@ cadence::Test::Test(int argc, char *argv[]) {
 	}
 
 	if (m_pretty) {
-		std::cout << "\n====================================\n";
-		std::cout << "  -- " << argv[0] << " --\n";
-		std::cout << "====================================\n\n";
+		//std::cout << "\n====================================\n";
+		std::cout << "==== " << argv[0] << " ====\n";
+		//std::cout << "====================================\n\n";
 	} else {
 		std::cout << "<testapp name=\"" << argv[0] << "\">\n";
 	}
@@ -49,13 +51,14 @@ cadence::Test::Test(int argc, char *argv[]) {
 	m_testfailcount = 0;
 	m_checkfailcount = 0;
 	m_checkcount = 0;
+
+	m_actualcout = cout.rdbuf();
 }
 
 cadence::Test::~Test() {
 	if (m_pretty) {
-		std::cout << "Finished.\n";
-		std::cout << "    Tests: " << m_testcount << ", failed " << m_testfailcount << "\n";
-		std::cout << "    Checks: " << m_checkcount << ", failed " << m_checkfailcount << "\n";
+		std::cout << "[Tests: " << m_testcount << ", failed " << m_testfailcount;
+		std::cout << ", Checks: " << m_checkcount << ", failed " << m_checkfailcount << "]\n";
 	} else {
 		std::cout << "\t<testcount>" << m_testcount << "</testcount>\n";
 		std::cout << "\t<failedtests>" << m_testfailcount << "</failedtests>\n";
@@ -69,12 +72,30 @@ void cadence::Test::checkPassed() {
 	m_checkcount++;
 }
 
+void cadence::Test::captureCOUT() {
+	m_actualcout = cout.rdbuf();
+	cout.flush();
+	cout.rdbuf(m_cout.rdbuf());
+}
+
+void cadence::Test::uncaptureCOUT() {
+	cout.rdbuf(m_actualcout);
+}
+
+bool cadence::Test::checkCOUT(const char *str) {
+	bool result = (m_cout.str() == str);
+	m_cout.str("");
+	return result;
+}
+
 void cadence::Test::checkFailed(int line, const char *function, const char *file) {
 	m_failed = true;
 	m_checkfailcount++;
 
+	uncaptureCOUT();
+
 	if (m_pretty) {
-		std::cout << function << ":" << line;
+		std::cout << (&function[5]) << ":" << line;
 
 		#ifdef LINUX
 		std::cout << "\e[31;1m";
@@ -94,13 +115,17 @@ void cadence::Test::checkFailed(int line, const char *function, const char *file
 
 		std::cout.flush();
 	} else {
-		std::cout << "\t<check name=\"" << function << "\" line=\"" << line << "\">failed</check>\n";
+		std::cout << "\t<check name=\"" << (&function[5]) << "\" line=\"" << line << "\">failed</check>\n";
 	}
+
+	captureCOUT();
 }
 
 void cadence::Test::testDone(const char *function) {
+	uncaptureCOUT();
+
 	if (m_pretty) {
-		std::cout << function;
+		std::cout << (&function[5]);
 	}
 
 	if (m_failed) {
@@ -121,7 +146,7 @@ void cadence::Test::testDone(const char *function) {
 			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 			#endif
 		} else {
-			std::cout << "\t<test name=\"" << function << "\">failed</test>\n";
+			std::cout << "\t<test name=\"" << (&function[5]) << "\">failed</test>\n";
 		}
 	} else {
 		if (m_pretty) {
@@ -141,18 +166,40 @@ void cadence::Test::testDone(const char *function) {
 			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 			#endif
 		} else {
-			std::cout << "\t<test name=\"" << function << "\">passed</test>\n";
+			std::cout << "\t<test name=\"" << (&function[5]) << "\">passed</test>\n";
 		}
 	}
 
 	std::cout.flush();
+	captureCOUT();
 }
 
 bool cadence::Test::run(testtype_t type, void (*func)(Test &)) {
 	m_failed = false;
 	m_curcheckcount = 0;
 	m_testcount++;
-	func(*this);
+
+	captureCOUT();
+	m_cout.str("");
+
+	long long tickdiff = 0;
+
+	if ((type == TEST_SYSTEM) || type == TEST_PERFORMANCE) {
+		Cadence vm;
+		vm.initialise();
+		long long startticks = vm.getTicks();
+		func(*this);
+		tickdiff = vm.getTicks() - startticks;
+	} else {
+		func(*this);
+	}
+
+	uncaptureCOUT();
+
+	if (type == TEST_PERFORMANCE) {
+		std::cout << " in " << ((double)tickdiff / 1000000.0) << "s --\n";		
+	}
+
 	if (m_failed) {
 		m_testfailcount++;
 		return false;

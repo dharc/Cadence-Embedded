@@ -69,8 +69,9 @@ int main(int argc, char *argv[]) {
 	test.run(Test::TEST_UNIT, test_oidarithmetic);
 	test.run(Test::TEST_UNIT, test_string);
 
-	Cadence vm;
-	vm.initialise();
+	//Cadence vm;
+	//vm.initialise();
 	test.run(Test::TEST_SYSTEM, test_getset);
 	test.run(Test::TEST_SYSTEM, test_iterator);
+	return test.status();
 }

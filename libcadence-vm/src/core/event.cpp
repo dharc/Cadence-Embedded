@@ -37,12 +37,13 @@ Event *Event::s_block;
 
 void *cadence::core::Event::operator new (size_t s) {
 	//event_lock.wait();
-	/*if (s_ppos >= EVENT_POOL_SIZE-1) {
+	if (s_ppos >= EVENT_POOL_SIZE-1) {
 		std::cerr << "================================================================================\n" <<
 			"FATAL ERROR: Event pool underflow. Pool size is: " << EVENT_POOL_SIZE << ". This generally means either you have a single very massive definition (a massive script?) or an infinite loop has occured. Possible also that you have more than " << EVENT_POOL_SIZE << " definitions evaluating in parallel.\n" <<
 					"================================================================================\n";
-		exit(-1);
-	}*/
+		void *v = s_pool[s_ppos];
+		return v;
+	}
 	void *v = s_pool[s_ppos++];
 	//event_lock.free();
 	return v;
@@ -55,11 +56,11 @@ void *cadence::core::Event::operator new (size_t size, const char *fname, int li
 
 void cadence::core::Event::operator delete(void *p) {
 	//event_lock.wait();
-	/*if (s_ppos == 0) {
+	if (s_ppos == 0) {
 		//event_lock.free();
-		Warning(Warning::EVENT_OVERFLOW, "Too many events are being deleted!");
+		//Warning(Warning::EVENT_OVERFLOW, "Too many events are being deleted!");
 		return;
-	}*/
+	}
 	s_pool[--s_ppos] = (Event*)p;
 	//event_lock.free();
 }

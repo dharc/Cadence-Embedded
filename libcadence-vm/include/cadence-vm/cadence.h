@@ -109,8 +109,9 @@ namespace cadence {
 		void initialise();
 		void finalise();
 
-		private:
 		long long getTicks();
+
+		private:
 
 		core::OID m_base;
 		int m_debug;

@@ -30,6 +30,10 @@
 //#define CHECK_EQUAL(A,B) if (A != B) { test.checkFailed(__LINE__.__func__,__FILE__); } else { test.checkPassed(); }
 #define CHECK(A) if (!(A)) { test.checkFailed(__LINE__,__func__,"__FILE__"); } else { test.checkPassed(); }
 #define DONE test.testDone(__func__);
+#define CHECK_COUT(A) if (test.checkCOUT(A)) { test.checkPassed(); } else { test.checkFailed(__LINE__,__func__,"__FILE__"); }
+
+#include <iostream>
+#include <sstream>
 
 namespace cadence {
 	class Test {
@@ -44,7 +48,10 @@ namespace cadence {
 
 		void checkFailed(int line, const char *function, const char *file);
 		void checkPassed();
+		bool checkCOUT(const char *str);
 		void testDone(const char *function);
+
+		int status() { return m_testfailcount; }
 
 		private:
 		bool m_intest;
@@ -55,6 +62,11 @@ namespace cadence {
 		int m_checkfailcount;
 		int m_testfailcount;
 		bool m_pretty;
+		std::ostringstream m_cout;
+		std::streambuf *m_actualcout;
+
+		void captureCOUT();
+		void uncaptureCOUT();
 	};
 };
 
