@@ -3,7 +3,7 @@ MODULE_PATH=@prefix@/share/cadence-vm/modules/
 MODULES=@MODULES@
 
 default::
-	for a in $(MODULES); do cd $$a; make; cd ..; done
+	for a in $(MODULES); do cd $$a; make; [ $$? -ne 0 ] && exit 1; cd ..; done
 
 install::
 	for a in $(MODULES); do cd $$a; make install; cd ..; done

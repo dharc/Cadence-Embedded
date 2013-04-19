@@ -1,6 +1,7 @@
 SHELL=/bin/sh
 
 default:: cadence
+all:: cadence
 
 cadence::
 	cd libcadence-vm; make
