@@ -2,7 +2,7 @@
 #include "browser.h"
 #include <QHBoxLayout>
 #include "syntax.h"
-#include <cadence-embedded/cadence.h>
+#include <cadence-vm/cadence.h>
 
 using namespace cadence;
 using namespace cadence::core;

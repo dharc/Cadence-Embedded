@@ -1,10 +1,10 @@
 #include "browser.h"
 #include <QPainter>
 #include <QMouseEvent>
-#include <cadence-embedded/file.h>
+#include <cadence-vm/file.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <cadence-embedded/agenthandler.h>
+#include <cadence-vm/agenthandler.h>
 #include <QToolTip>
 #include "observableviewer.h"
 #include <QApplication>

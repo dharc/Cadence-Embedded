@@ -6,8 +6,8 @@
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QStringList>
-#include <cadence-embedded/cadence.h>
-#include <cadence-embedded/core/core.h>
+#include <cadence-vm/cadence.h>
+#include <cadence-vm/core/core.h>
 #include <QScrollArea>
 
 using namespace cadence;

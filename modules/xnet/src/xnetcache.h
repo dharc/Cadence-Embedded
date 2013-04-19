@@ -1,8 +1,8 @@
 #ifndef _XNETCACHE_
 #define _XNETCACHE_
 
-#include <cadence-embedded/core/handler.h>
-#include <cadence-embedded/core/oid.h>
+#include <cadence-vm/core/handler.h>
+#include <cadence-vm/core/oid.h>
 
 class XNetConnection;
 

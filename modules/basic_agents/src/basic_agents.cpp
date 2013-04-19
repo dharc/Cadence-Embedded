@@ -1,4 +1,4 @@
-#include <cadence-embedded/agent.h>
+#include <cadence-vm/agent.h>
 
 using namespace cadence;
 using namespace cadence::core;

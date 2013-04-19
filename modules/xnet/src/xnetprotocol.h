@@ -1,7 +1,7 @@
 #ifndef _cadence_XNETPROTOCOL_H_
 #define _cadence_XNETPROTOCOL_H_
 
-#include <cadence-embedded/core/event.h>
+#include <cadence-vm/core/event.h>
 #include "xnet.h"
 
 #include <cstring>

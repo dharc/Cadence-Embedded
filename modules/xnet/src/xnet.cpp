@@ -1,7 +1,7 @@
 #include "xnethandler.h"
 #include "xnetconnection.h"
 #include "xnet.h"
-#include <cadence-embedded/core/core.h>
+#include <cadence-vm/core/core.h>
 
 using namespace cadence;
 using namespace cadence::core;

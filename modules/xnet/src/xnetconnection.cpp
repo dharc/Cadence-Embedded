@@ -1,7 +1,7 @@
 #include "xnetconnection.h"
 #include "xnetprotocol.h"
 #include "xnethandler.h"
-#include <cadence-embedded/messages.h>
+#include <cadence-vm/messages.h>
 #include <string.h>
 
 #ifndef WIN32

@@ -2,8 +2,8 @@
 #include "xnetconnection.h"
 #include "xnetprotocol.h"
 #include "xnetcache.h"
-#include <cadence-embedded/core/processor.h>
-#include <cadence-embedded/core/buffer.h>
+#include <cadence-vm/core/processor.h>
+#include <cadence-vm/core/buffer.h>
 #include <string.h>
 
 using namespace cadence;

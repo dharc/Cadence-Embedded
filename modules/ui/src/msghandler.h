@@ -2,8 +2,8 @@
 #define _MSGHANDLER_
 
 
-#include <cadence-embedded/agent.h>
-#include <cadence-embedded/core/oid.h>
+#include <cadence-vm/agent.h>
+#include <cadence-vm/core/oid.h>
 #include <QListWidget>
 #include <QTabWidget>
 

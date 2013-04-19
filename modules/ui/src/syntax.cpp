@@ -1,7 +1,7 @@
 #include "syntax.h"
 #include <iostream>
-#include <cadence-embedded/core/oid.h>
-#include <cadence-embedded/core/core.h>
+#include <cadence-vm/core/oid.h>
+#include <cadence-vm/core/core.h>
 
 using namespace cadence;
 using namespace cadence::core;
