@@ -79,7 +79,7 @@ namespace cadence {
 };
 
 /** Macro to write dasm code in c++ */
-#include <cadence-embedded/core/core.h>
+#include <cadence-vm/core/core.h>
 #define _DASM(A) ((cadence::Notation*)(cadence::core::root.get("notations").get("dasm")))->execute(#A, *this)
 #define _DASM2(A) ((cadence::Notation*)(cadence::core::root.get("notations").get("dasm")))->execute(#A, cadence::core::root)
 

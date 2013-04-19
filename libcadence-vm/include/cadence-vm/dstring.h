@@ -29,7 +29,7 @@
 #include <cadence-vm/core/oid.h>
 #include <cadence-vm/core/type_traits.h>
 
-#include <cadence-embedded/dll.h>
+#include <cadence-vm/dll.h>
 
 namespace cadence {
 	/**
