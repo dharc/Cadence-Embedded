@@ -1,9 +1,9 @@
 #include "xnetprotocol.h"
 #include "xnetconnection.h"
-#include <cadence-embedded/cadence.h>
-#include <cadence-embedded/dstring.h>
-#include <cadence-embedded/messages.h>
-#include <cadence-embedded/core/buffer.h>
+#include <cadence-vm/cadence.h>
+#include <cadence-vm/dstring.h>
+#include <cadence-vm/messages.h>
+#include <cadence-vm/core/buffer.h>
 #include <string.h>
 
 #include "tinyxml.h"

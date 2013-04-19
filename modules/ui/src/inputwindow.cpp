@@ -3,10 +3,10 @@
 #include "inputwindow.h"
 #include "syntax.h"
 #include <iostream>
-#include <cadence-embedded/cadence.h>
-#include <cadence-embedded/core/oid.h>
-#include <cadence-embedded/dasm.h>
-#include <cadence-embedded/messages.h>
+#include <cadence-vm/cadence.h>
+#include <cadence-vm/core/oid.h>
+#include <cadence-vm/dasm.h>
+#include <cadence-vm/messages.h>
 #include "browser.h"
 #include "msghandler.h"
 

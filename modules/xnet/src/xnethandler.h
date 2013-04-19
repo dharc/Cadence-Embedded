@@ -1,10 +1,10 @@
 #ifndef _cadence_XNETHANDLER_H_
 #define _cadence_XNETHANDLER_H_
 
-#include <cadence-embedded/core/handler.h>
-#include <cadence-embedded/core/event.h>
-#include <cadence-embedded/list.h>
-#include <cadence-embedded/vector.h>
+#include <cadence-vm/core/handler.h>
+#include <cadence-vm/core/event.h>
+#include <cadence-vm/list.h>
+#include <cadence-vm/vector.h>
 
 class XNetConnection;
 class XNetCache;

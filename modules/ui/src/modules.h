@@ -1,8 +1,8 @@
 #ifndef _MODULE_VIEW_
 #define _MODULE_VIEW_
 
-#include <cadence-embedded/core/core.h>
-#include <cadence-embedded/agent.h>
+#include <cadence-vm/core/core.h>
+#include <cadence-vm/agent.h>
 #include <QWidget>
 #include <QTableWidget>
 

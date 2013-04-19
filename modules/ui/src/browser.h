@@ -1,8 +1,8 @@
 #ifndef _BROWSER_H_
 #define _BROWSER_H_
 
-#include <cadence-embedded/core/oid.h>
-#include <cadence-embedded/agent.h>
+#include <cadence-vm/core/oid.h>
+#include <cadence-vm/agent.h>
 #include <QWidget>
 #include <list>
 #include <QMenu>

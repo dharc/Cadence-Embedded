@@ -3,7 +3,7 @@
 
 #include <QTextEdit>
 #include <QPushButton>
-#include <cadence-embedded/core/oid.h>
+#include <cadence-vm/core/oid.h>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QComboBox>

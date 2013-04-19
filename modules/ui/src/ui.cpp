@@ -1,4 +1,4 @@
-#include <cadence-embedded/agent.h>
+#include <cadence-vm/agent.h>
 #include <QtGui>
 #include "inputwindow.h"
 #include "mainwindow.h"
