@@ -67,6 +67,7 @@ Names::Names() {
 	add(">", Greater);
 	add("&", And);
 	add("|", Or);
+	add("parent", Parent);
 
 	add("add", Add);
 	add("sub", Subtract);

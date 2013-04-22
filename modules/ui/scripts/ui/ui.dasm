@@ -1,6 +1,6 @@
-.ui = (new
+this.ui = (new
 	browser = (new
-		root = (@root notations dasm variables)
+		root = (@root.notations.dasm.variables)
 		useid = true
 		hideid = true
 		hideparent = false
@@ -9,13 +9,13 @@
 	)
 );
 
-@ui = (.ui);
+@ui = (this.ui);
 
-.modules ui = (new type=Module
+this.modules.ui = (new type=Module
 	file = (new type=LocalFile
 		filename = "libcadence-vm_ui.so"
 	)
-	base = (.)
+	base = (this)
 	update = true
 	frequency = 0.00
 );
